@@ -13,7 +13,8 @@ class ProfileController extends GetxController {
     errorMessage.value = null;
     try {
       final data = await Get.find<ProfileService>().getProfile();
-      profile.value = Lawyer.fromJson(data);
+      final lawyerData = data['lawyer'] as Map<String, dynamic>? ?? data;
+      profile.value = Lawyer.fromJson(lawyerData);
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {
@@ -25,8 +26,13 @@ class ProfileController extends GetxController {
     isLoading.value = true;
     errorMessage.value = null;
     try {
-      await Get.find<ProfileService>().updateProfile(data);
-      await loadProfile();
+      final response = await Get.find<ProfileService>().updateProfile(data);
+      final lawyerData = response['lawyer'] as Map<String, dynamic>?;
+      if (lawyerData != null) {
+        profile.value = Lawyer.fromJson(lawyerData);
+      } else {
+        await loadProfile();
+      }
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {

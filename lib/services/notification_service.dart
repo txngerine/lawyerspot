@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../models/notification_model.dart';
 import 'base_service.dart';
 

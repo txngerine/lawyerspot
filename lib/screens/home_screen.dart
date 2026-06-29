@@ -3,9 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import '../controllers/cms_controller.dart';
 import '../models/cms_model.dart';
-import '../models/article_model.dart';
-import '../models/qa_model.dart';
-import '../models/lawyer_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 

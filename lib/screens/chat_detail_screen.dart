@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 import '../controllers/conversation_controller.dart';
 import '../models/conversation_model.dart';
-import '../theme/app_theme.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   final Conversation conversation;

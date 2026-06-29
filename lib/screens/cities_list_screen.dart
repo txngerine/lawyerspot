@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/cms_controller.dart';
-import '../models/cms_model.dart';
 import '../theme/app_theme.dart';
 import 'city_detail_screen.dart';
 

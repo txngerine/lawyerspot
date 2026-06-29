@@ -4,7 +4,6 @@ import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/profile_controller.dart';
-import 'consultation_detail_screen.dart';
 import 'notifications_screen.dart';
 import 'qa_history_screen.dart';
 import 'statistics_screen.dart';

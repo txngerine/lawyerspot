@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
-import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 
 class ChangePasswordScreen extends StatefulWidget {

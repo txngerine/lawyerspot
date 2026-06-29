@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../config/api_config.dart';
 import '../models/subscription_model.dart';
@@ -19,7 +18,8 @@ class SubscriptionService {
       data: {'planId': planId},
     );
     debugPrint('[Subscription] renew response: ${response.data}');
-    return SubscriptionRenewResponse.fromJson(
-        response.data as Map<String, dynamic>);
+    final data = response.data as Map<String, dynamic>;
+    final subscriptionData = data['subscription'] as Map<String, dynamic>? ?? data;
+    return SubscriptionRenewResponse.fromJson(subscriptionData);
   }
 }
