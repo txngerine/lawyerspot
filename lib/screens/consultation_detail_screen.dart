@@ -7,6 +7,7 @@ class ConsultationDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Consultation reason: Client is seeking preliminary advice regarding a potential merger with a competitor. They need guidance on anti-trust compliance and an overview of the required regulatory filings before proceeding with formal negotiations.');
     return Scaffold(
       appBar: const BrandAppBar(showBack: true, title: 'Consultation Detail'),
       body: SafeArea(
