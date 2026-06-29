@@ -1,151 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
-import 'edit_profile_screen.dart';
-import 'consultations_list_screen.dart';
-import 'qa_history_screen.dart';
-import 'statistics_screen.dart';
-import 'notifications_screen.dart';
+import '../controllers/auth_controller.dart';
+import '../controllers/profile_controller.dart';
+import 'subscription_screen.dart';
+import 'change_password_screen.dart';
+import 'conversation_list_screen.dart';
+import 'article_management_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Get.find<AuthController>();
+    final profile = Get.find<ProfileController>();
     return Scaffold(
       appBar: BrandAppBar(
-        onNotificationsTap: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+        onNotificationsTap: () {},
       ),
       body: SafeArea(
         top: false,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
-          children: [
-            SoftCard(
-              child: Column(
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        width: 96,
-                        height: 96,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 4),
-                          boxShadow: [BoxShadow(color: AppColors.navy.withOpacity(0.06), blurRadius: 8)],
-                        ),
-                        child: const CircleAvatar(
-                          backgroundColor: AppColors.surfaceContainerHigh,
-                          child: Icon(Icons.person, size: 40, color: AppColors.navy),
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 2,
-                        child: Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            color: AppColors.navy,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2),
-                          ),
-                          child: const Icon(Icons.verified, size: 15, color: AppColors.gold),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Text('Eleanor Vance, Esq.', style: AppText.headlineMd),
-                  const SizedBox(height: 2),
-                  Text('Senior Partner • Corporate Law',
-                      style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant)),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => const EditProfileScreen())),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.navy,
-                      backgroundColor: AppColors.goldLight.withOpacity(0.7),
-                      side: BorderSide.none,
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                    ),
-                    child: const Text('Edit Profile'),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            _settingsGroup(
-              title: 'Professional Hub',
-              items: [
-                _SettingsItem(Icons.person_outline, 'My Profile',
-                    () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const EditProfileScreen()))),
-                _SettingsItem(Icons.event_note_outlined, 'My Consultations',
-                    () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ConsultationsListScreen()))),
-                _SettingsItem(Icons.forum_outlined, 'My Q&A Answers',
-                    () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QAHistoryScreen()))),
-                _SettingsItem(Icons.bar_chart_outlined, 'Statistics',
-                    () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StatisticsScreen()))),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            _settingsGroup(
-              title: 'Preferences',
-              items: [
-                _SettingsItem(Icons.notifications_active_outlined, 'Notification Preferences', () {}),
-                _SettingsItem(Icons.account_balance_outlined, 'Bank/Payment Details', () {}),
-                _SettingsItem(Icons.help_outline, 'Help & Support', () {}),
-              ],
-              danger: _SettingsItem(Icons.logout, 'Logout', () {
-                Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
-              }),
-            ),
-            const SizedBox(height: 16),
-
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: AppColors.navy,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        child: Obx(() {
+          final p = profile.profile.value;
+          final name = auth.sessionUser.value?.name ?? 'Lawyer';
+          final practice = p?.practice ?? '';
+          return ListView(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+            children: [
+              SoftCard(
+                child: Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Text('Pro Status Active',
-                            style: AppText.titleLg.copyWith(color: AppColors.gold)),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Your verified lawyer status is current. Next document review is '
-                          'scheduled for Oct 2024.',
-                          style: AppText.bodySm.copyWith(color: Colors.white.withOpacity(0.8)),
+                        Container(
+                          width: 96,
+                          height: 96,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 4),
+                            boxShadow: [BoxShadow(color: AppColors.navy.withOpacity(0.06), blurRadius: 8)],
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.surfaceContainerHigh,
+                            backgroundImage: p?.image.isNotEmpty == true
+                                ? NetworkImage(p!.image)
+                                : null,
+                            child: p?.image.isNotEmpty != true
+                                ? Text(name[0].toUpperCase(),
+                                    style: AppText.titleLg.copyWith(fontSize: 32))
+                                : null,
+                          ),
                         ),
+                        if (p?.verified == true)
+                          Positioned(
+                            right: 0,
+                            bottom: 2,
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: AppColors.navy,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: const Icon(Icons.verified, size: 15, color: AppColors.gold),
+                            ),
+                          ),
                       ],
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.gold,
-                      side: const BorderSide(color: AppColors.gold),
-                      shape: const StadiumBorder(),
+                    const SizedBox(height: 12),
+                    Text(name, style: AppText.headlineMd),
+                    if (practice.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(practice,
+                          style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant)),
+                    ],
+                    const SizedBox(height: 16),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.navy,
+                        backgroundColor: AppColors.goldLight.withOpacity(0.7),
+                        side: BorderSide.none,
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+                      ),
+                      child: const Text('Edit Profile'),
                     ),
-                    child: const Text('Details'),
-                  ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              _settingsGroup(
+                title: 'Professional Hub',
+                items: [
+                  _SettingsItem(Icons.article_outlined, 'My Articles',
+                      () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const ArticleManagementScreen()))),
+                  _SettingsItem(Icons.chat_outlined, 'Messages',
+                      () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const ConversationListScreen()))),
+                  _SettingsItem(Icons.subscriptions_outlined, 'Subscription',
+                      () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const SubscriptionScreen()))),
                 ],
               ),
-            ),
-          ],
-        ),
+              const SizedBox(height: 16),
+
+              _settingsGroup(
+                title: 'Preferences',
+                items: [
+                  _SettingsItem(Icons.lock_outline, 'Change Password',
+                      () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const ChangePasswordScreen()))),
+                  _SettingsItem(Icons.help_outline, 'Help & Support', () {}),
+                ],
+                danger: _SettingsItem(Icons.logout, 'Logout', () {
+                  auth.logout();
+                  Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                }),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

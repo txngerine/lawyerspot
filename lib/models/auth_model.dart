@@ -1,79 +1,128 @@
 class LoginRequest {
   final String email;
   final String password;
-  final bool rememberMe;
+  final String? role;
 
   LoginRequest({
     required this.email,
     required this.password,
-    this.rememberMe = false,
+    this.role,
   });
 
   Map<String, dynamic> toJson() => {
         'email': email,
         'password': password,
-        'remember_me': rememberMe,
+        if (role != null) 'role': role,
       };
 }
 
-class RegisterRequest {
+class LawyerSignupRequest {
   final String name;
   final String email;
-  final String barNumber;
-  final String barState;
-  final int yearsExperience;
-  final List<String> practiceAreas;
-  final List<String> cities;
-  final int consultationFee;
-  final String bio;
+  final String password;
+  final String? phone;
+  final String practice;
+  final String? barId;
+  final String? citySlug;
 
-  RegisterRequest({
+  LawyerSignupRequest({
     required this.name,
     required this.email,
-    required this.barNumber,
-    required this.barState,
-    required this.yearsExperience,
-    required this.practiceAreas,
-    required this.cities,
-    required this.consultationFee,
-    required this.bio,
+    required this.password,
+    this.phone,
+    required this.practice,
+    this.barId,
+    this.citySlug,
   });
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
-        'bar_number': barNumber,
-        'bar_state': barState,
-        'years_experience': yearsExperience,
-        'practice_areas': practiceAreas,
-        'cities': cities,
-        'consultation_fee': consultationFee,
-        'bio': bio,
+        'password': password,
+        if (phone != null) 'phone': phone,
+        'practice': practice,
+        if (barId != null) 'bar_id': barId,
+        if (citySlug != null) 'city_slug': citySlug,
+      };
+}
+
+class ClientSignupRequest {
+  final String name;
+  final String email;
+  final String password;
+
+  ClientSignupRequest({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'password': password,
       };
 }
 
 class AuthResponse {
-  final String token;
-  final UserData user;
+  final bool success;
+  final String role;
+  final String userId;
+  final String? lawyerId;
+  final String? name;
 
-  AuthResponse({required this.token, required this.user});
+  AuthResponse({
+    required this.success,
+    required this.role,
+    required this.userId,
+    this.lawyerId,
+    this.name,
+  });
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-        token: json['token'] as String,
-        user: UserData.fromJson(json['user'] as Map<String, dynamic>),
+        success: json['success'] as bool? ?? true,
+        role: json['role'] as String? ?? '',
+        userId: json['userId'] as String? ?? '',
+        lawyerId: json['lawyerId'] as String?,
+        name: json['name'] as String?,
       );
 }
 
-class UserData {
+class SessionUser {
   final String id;
-  final String name;
   final String email;
+  final String name;
+  final String role;
+  final String? lawyerId;
 
-  UserData({required this.id, required this.name, required this.email});
+  SessionUser({
+    required this.id,
+    required this.email,
+    required this.name,
+    required this.role,
+    this.lawyerId,
+  });
 
-  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        email: json['email'] as String,
+  factory SessionUser.fromJson(Map<String, dynamic> json) => SessionUser(
+        id: json['id'] as String? ?? '',
+        email: json['email'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        role: json['role'] as String? ?? 'client',
+        lawyerId: json['lawyerId'] as String?,
       );
+}
+
+class ChangePasswordRequest {
+  final String currentPassword;
+  final String newPassword;
+
+  ChangePasswordRequest({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      };
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import '../controllers/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,7 +14,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberMe = false;
   bool _obscure = true;
 
   @override
@@ -22,12 +23,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _signIn() {
-    Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+  void _signIn() async {
+    final auth = Get.find<AuthController>();
+    await auth.login(
+      _emailController.text.trim(),
+      _passwordController.text,
+    );
+    if (auth.isLoggedIn.value) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final auth = Get.find<AuthController>();
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -83,30 +92,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Checkbox(
-                                value: _rememberMe,
-                                onChanged: (v) => setState(() => _rememberMe = v ?? false),
+                        Obx(() {
+                          if (auth.errorMessage.value != null) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: Text(
+                                auth.errorMessage.value!,
+                                style: AppText.bodySm.copyWith(color: AppColors.error),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text('Remember Me',
-                                style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant)),
-                            const Spacer(),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text('Forgot Password?',
-                                  style: AppText.bodySm.copyWith(
-                                      color: AppColors.goldDark, fontWeight: FontWeight.w600)),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        GoldButton(label: 'Sign In', onPressed: _signIn),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        }),
+                        Obx(() => GoldButton(
+                          label: auth.isLoading.value ? 'Signing in...' : 'Sign In',
+                          onPressed: auth.isLoading.value ? null : _signIn,
+                        )),
                       ],
                     ),
                   ),

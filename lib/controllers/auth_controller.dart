@@ -1,33 +1,27 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/auth_model.dart';
 import '../services/auth_service.dart';
 
 class AuthController extends GetxController {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  final rememberMe = false.obs;
-  final obscurePassword = true.obs;
+  final sessionUser = Rxn<SessionUser>();
   final isLoggedIn = false.obs;
+  final isLawyer = false.obs;
   final isLoading = false.obs;
   final errorMessage = Rxn<String>();
 
-  void toggleRememberMe() => rememberMe.toggle();
-  void toggleObscurePassword() => obscurePassword.toggle();
+  @override
+  void onInit() {
+    checkSession();
+    super.onInit();
+  }
 
-  Future<void> signIn() async {
+  Future<void> login(String email, String password, {String? role}) async {
     isLoading.value = true;
     errorMessage.value = null;
     try {
-      final request = LoginRequest(
-        email: emailController.text.trim(),
-        password: passwordController.text,
-        rememberMe: rememberMe.value,
-      );
+      final request = LoginRequest(email: email, password: password, role: role);
       await Get.find<AuthService>().login(request);
-      isLoggedIn.value = true;
-      Get.offAllNamed('/home');
+      await checkSession();
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {
@@ -35,20 +29,77 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> lawyerSignup({
+    required String name,
+    required String email,
+    required String password,
+    String? phone,
+    required String practice,
+    String? barId,
+    String? citySlug,
+  }) async {
+    isLoading.value = true;
+    errorMessage.value = null;
+    try {
+      final request = LawyerSignupRequest(
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        practice: practice,
+        barId: barId,
+        citySlug: citySlug,
+      );
+      await Get.find<AuthService>().lawyerSignup(request);
+      await checkSession();
+    } catch (e) {
+      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> clientSignup({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    isLoading.value = true;
+    errorMessage.value = null;
+    try {
+      final request = ClientSignupRequest(
+        name: name,
+        email: email,
+        password: password,
+      );
+      await Get.find<AuthService>().clientSignup(request);
+      await checkSession();
+    } catch (e) {
+      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> logout() async {
     try {
       await Get.find<AuthService>().logout();
     } catch (_) {}
+    sessionUser.value = null;
     isLoggedIn.value = false;
-    emailController.clear();
-    passwordController.clear();
-    Get.offAllNamed('/login');
+    isLawyer.value = false;
   }
 
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
+  Future<void> checkSession() async {
+    try {
+      final user = await Get.find<AuthService>().getMe();
+      sessionUser.value = user;
+      isLoggedIn.value = true;
+      isLawyer.value = user.role == 'lawyer';
+    } catch (_) {
+      sessionUser.value = null;
+      isLoggedIn.value = false;
+      isLawyer.value = false;
+    }
   }
 }

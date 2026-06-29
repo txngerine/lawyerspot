@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import '../theme/app_theme.dart';
+import '../controllers/cms_controller.dart';
+import '../controllers/auth_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,7 +12,8 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fade;
   late final Animation<Offset> _slide;
@@ -25,9 +29,27 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _slide = Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    Future.delayed(const Duration(milliseconds: 1800), () {
-      if (mounted) Navigator.of(context).pushReplacementNamed('/login');
-    });
+    _initApp();
+  }
+
+  Future<void> _initApp() async {
+    final cms = Get.find<CmsController>();
+    final auth = Get.find<AuthController>();
+
+    await Future.wait([
+      cms.fetchCms(),
+      auth.checkSession(),
+    ]);
+
+    if (!mounted) return;
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    if (!mounted) return;
+    if (auth.isLoggedIn.value) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    } else {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
   }
 
   @override
@@ -44,7 +66,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         onTap: () => Navigator.of(context).pushReplacementNamed('/login'),
         child: Stack(
           children: [
-            // Decorative faint ring, echoing the HTML background circle.
             Center(
               child: Container(
                 width: 340,

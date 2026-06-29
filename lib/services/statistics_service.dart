@@ -1,14 +1,13 @@
-import '../config/api_config.dart';
+import 'package:dio/dio.dart';
 import '../models/statistics_model.dart';
 import 'base_service.dart';
 
-class StatisticsService extends BaseService {
+class StatisticsService {
   Future<StatisticsModel> getOverview({String period = '30d'}) async {
-    final response =
-        await get(ApiConfig.statisticsOverview, query: {'period': period});
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to load statistics');
-    }
-    return StatisticsModel.fromJson(response.body as Map<String, dynamic>);
+    final response = await BaseService.instance.dio.get(
+      '/statistics/overview',
+      queryParameters: {'period': period},
+    );
+    return StatisticsModel.fromJson(response.data as Map<String, dynamic>);
   }
 }

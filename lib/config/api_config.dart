@@ -1,40 +1,41 @@
 class ApiConfig {
-  static const String baseUrl = 'https://api.lawyerspot.com/v1';
+  static const String baseUrl = 'https://lawyerspot.in/api/v1';
+
+  // Public
+  static const String health = '/health';
+  static const String cms = '/cms';
+  static String qaAnswers(String slug) => '/qa/$slug/answers';
+  static String sections(String type) => '/sections?type=$type';
+  static String section(String slug) => '/sections/$slug';
 
   // Auth
+  static const String lawyerSignup = '/auth/lawyer-signup';
+  static const String clientSignup = '/auth/signup';
   static const String login = '/auth/login';
-  static const String register = '/auth/register';
   static const String logout = '/auth/logout';
+  static const String authMe = '/auth/me';
 
-  // Dashboard
-  static const String dashboardSummary = '/dashboard/summary';
-  static const String dashboardActionRequired = '/dashboard/action-required';
+  // Lawyer Profile
+  static const String lawyerProfile = '/lawyer/profile';
+  static const String changePassword = '/lawyer/change-password';
+  static const String subscription = '/lawyer/subscription';
+  static const String renewSubscription = '/lawyer/subscription/renew';
 
-  // Consultations
-  static const String consultations = '/consultations';
-  static String consultation(String id) => '/consultations/$id';
-  static String consultationNotes(String id) => '/consultations/$id/notes';
-  static String consultationDocuments(String id) => '/consultations/$id/documents';
+  // Lawyer Articles
+  static const String lawyerArticles = '/lawyer/articles';
+  static String lawyerArticle(String slug) => '/lawyer/articles/$slug';
 
-  // Q&A
-  static const String questions = '/qa/questions';
-  static String question(String id) => '/qa/questions/$id';
-  static String questionAnswers(String id) => '/qa/questions/$id/answers';
-  static const String myAnswers = '/qa/my-answers';
+  // Lawyer Q&A
+  static const String lawyerQaQuestions = '/lawyer/qa/questions';
+  static const String lawyerQaAnswers = '/lawyer/qa/answers';
+  static String lawyerQaQuestion(String id) => '/lawyer/qa/questions/$id';
+  static String lawyerQaAnswer(String id) => '/lawyer/qa/questions/$id/answers';
+  static String deleteAnswer(String id) => '/lawyer/qa/answers/$id';
 
-  // Profile
-  static const String profile = '/profile';
-  static const String profileVerificationStatus = '/profile/verification-status';
-  static const String profilePhoto = '/profile/photo';
-
-  // Notifications
-  static const String notifications = '/notifications';
-  static String notificationRead(String id) => '/notifications/$id/read';
-
-  // Statistics
-  static const String statisticsOverview = '/statistics/overview';
-
-  // Settings
-  static const String settingsNotifications = '/settings/notifications';
-  static const String settingsPayment = '/settings/payment';
+  // Lawyer Conversations
+  static const String conversations = '/lawyer/conversations';
+  static String conversationMessages(String id) =>
+      '/lawyer/conversations/$id/messages';
+  static String conversationRead(String id) =>
+      '/lawyer/conversations/$id/read';
 }

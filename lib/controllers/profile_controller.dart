@@ -1,74 +1,52 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../data/mock_data.dart';
-import '../models/user_model.dart';
-
+import '../models/auth_model.dart';
+import '../models/lawyer_model.dart';
+import '../services/profile_service.dart';
 
 class ProfileController extends GetxController {
-  final profile = Rxn<UserModel>();
-  final isVerified = false.obs;
-  final isLoading = true.obs;
+  final profile = Rxn<Lawyer>();
+  final isLoading = false.obs;
   final errorMessage = Rxn<String>();
-  final isAvailable = true.obs;
-
-  final bioController = TextEditingController();
-  final yearsController = TextEditingController();
-  final feeController = TextEditingController();
-  final cityController = TextEditingController();
-  final practiceAreas = <String>{}.obs;
-
-  @override
-  void onInit() {
-    loadProfile();
-    super.onInit();
-  }
 
   Future<void> loadProfile() async {
     isLoading.value = true;
     errorMessage.value = null;
     try {
-      // TODO: Replace mock with real API call when backend is ready
-      // profile.value = await Get.find<ProfileService>().getProfile();
-      profile.value = mockUser();
-      final p = profile.value!;
-      bioController.text = p.bio ?? mockEditorBio();
-      yearsController.text = p.yearsExperience?.toString() ?? mockEditorYears();
-      feeController.text = p.consultationFee?.toString() ?? mockEditorFee();
-      cityController.text = p.cities.isNotEmpty ? p.cities.first : mockEditorCity();
-      practiceAreas.assignAll(p.practiceAreas.isNotEmpty ? p.practiceAreas : mockEditorPracticeAreas().toList());
-      isAvailable.value = p.isAvailable;
-      isVerified.value = p.isVerified;
+      final data = await Get.find<ProfileService>().getProfile();
+      profile.value = Lawyer.fromJson(data);
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
-      profile.value = mockUser();
     } finally {
       isLoading.value = false;
     }
   }
 
-  Future<void> saveProfile() async {
+  Future<void> updateProfile(Map<String, dynamic> data) async {
+    isLoading.value = true;
+    errorMessage.value = null;
     try {
-      // TODO: Replace mock with real API call when backend is ready
-      // await Get.find<ProfileService>().updateProfile({...});
-      Get.snackbar('Saved', 'Profile changes saved.',
-          snackPosition: SnackPosition.BOTTOM);
+      await Get.find<ProfileService>().updateProfile(data);
       await loadProfile();
     } catch (e) {
-      Get.snackbar('Error', e.toString().replaceFirst('Exception: ', ''),
-          snackPosition: SnackPosition.BOTTOM);
+      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  void toggleAvailability() => isAvailable.toggle();
-
-  void removeArea(String area) => practiceAreas.remove(area);
-
-  @override
-  void onClose() {
-    bioController.dispose();
-    yearsController.dispose();
-    feeController.dispose();
-    cityController.dispose();
-    super.onClose();
+  Future<void> changePassword(String current, String newPwd) async {
+    isLoading.value = true;
+    errorMessage.value = null;
+    try {
+      final req = ChangePasswordRequest(
+        currentPassword: current,
+        newPassword: newPwd,
+      );
+      await Get.find<ProfileService>().changePassword(req);
+    } catch (e) {
+      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

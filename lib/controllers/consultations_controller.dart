@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
-import '../data/mock_data.dart';
 import '../models/consultation_model.dart';
-
+import '../services/consultation_service.dart';
 
 class ConsultationsController extends GetxController {
   final consultations = <ConsultationModel>[].obs;
@@ -19,14 +18,11 @@ class ConsultationsController extends GetxController {
     isLoading.value = true;
     errorMessage.value = null;
     try {
-      // TODO: Replace mock with real API call when backend is ready
-      // final status = showUpcoming.value ? 'upcoming' : 'past';
-      // consultations.value =
-      //     await Get.find<ConsultationService>().getConsultations(status);
-      consultations.value = mockFullUpcomingConsultations();
+      final status = showUpcoming.value ? 'upcoming' : 'past';
+      consultations.value =
+          await Get.find<ConsultationService>().getConsultations(status);
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
-      consultations.value = mockFullUpcomingConsultations();
     } finally {
       isLoading.value = false;
     }

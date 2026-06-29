@@ -1,92 +1,146 @@
-class QuestionModel {
+class QaPost {
   final String id;
-  final String area;
-  final int answers;
   final String title;
-  final String preview;
-  final String body;
-  final String author;
-  final String timeAgo;
+  final String excerpt;
+  final String category;
+  final int answers;
+  final int views;
+  final String slug;
+  final String status;
+  final String content;
 
-  QuestionModel({
-    required this.id,
-    required this.area,
-    required this.answers,
-    required this.title,
-    required this.preview,
-    this.body = '',
-    required this.author,
-    required this.timeAgo,
+  QaPost({
+    this.id = '',
+    this.title = '',
+    this.excerpt = '',
+    this.category = '',
+    this.answers = 0,
+    this.views = 0,
+    this.slug = '',
+    this.status = 'published',
+    this.content = '',
   });
 
-  factory QuestionModel.fromJson(Map<String, dynamic> json) => QuestionModel(
-        id: json['id'] as String,
-        area: json['area'] as String,
-        answers: json['answers'] as int,
-        title: json['title'] as String,
-        preview: json['preview'] as String,
-        body: json['body'] as String? ?? '',
-        author: json['author'] as String,
-        timeAgo: json['time_ago'] as String,
+  factory QaPost.fromJson(Map<String, dynamic> json) => QaPost(
+        id: json['id'] as String? ?? '',
+        title: json['title'] as String? ?? '',
+        excerpt: json['excerpt'] as String? ?? '',
+        category: json['category'] as String? ?? '',
+        answers: json['answers'] as int? ?? 0,
+        views: json['views'] as int? ?? 0,
+        slug: json['slug'] as String? ?? '',
+        status: json['status'] as String? ?? 'published',
+        content: json['content'] as String? ?? '',
       );
 }
 
-class AnswerModel {
+class Answer {
   final String id;
+  final String lawyerId;
   final String lawyerName;
-  final String? lawyerInitials;
-  final String? lawyerTitle;
-  final String? lawyerLocation;
   final String body;
-  final int helpfulCount;
+  final String status;
   final String createdAt;
+  final String? updatedAt;
+  final String? questionTitle;
+  final String? questionSlug;
+  final String? questionCategory;
+  final String? qaPostId;
 
-  AnswerModel({
-    required this.id,
-    required this.lawyerName,
-    this.lawyerInitials,
-    this.lawyerTitle,
-    this.lawyerLocation,
-    required this.body,
-    this.helpfulCount = 0,
-    required this.createdAt,
+  Answer({
+    this.id = '',
+    this.lawyerId = '',
+    this.lawyerName = '',
+    this.body = '',
+    this.status = 'published',
+    this.createdAt = '',
+    this.updatedAt,
+    this.questionTitle,
+    this.questionSlug,
+    this.questionCategory,
+    this.qaPostId,
   });
 
-  factory AnswerModel.fromJson(Map<String, dynamic> json) => AnswerModel(
-        id: json['id'] as String,
-        lawyerName: json['lawyer_name'] as String,
-        lawyerInitials: json['lawyer_initials'] as String?,
-        lawyerTitle: json['lawyer_title'] as String?,
-        lawyerLocation: json['lawyer_location'] as String?,
-        body: json['body'] as String,
-        helpfulCount: json['helpful_count'] as int? ?? 0,
-        createdAt: json['created_at'] as String,
+  factory Answer.fromJson(Map<String, dynamic> json) => Answer(
+        id: json['id'] as String? ?? '',
+        lawyerId: json['lawyerId'] as String? ?? '',
+        lawyerName: json['lawyerName'] as String? ?? '',
+        body: json['body'] as String? ?? '',
+        status: json['status'] as String? ?? 'published',
+        createdAt: json['createdAt'] as String? ?? '',
+        updatedAt: json['updatedAt'] as String?,
+        questionTitle: json['questionTitle'] as String?,
+        questionSlug: json['questionSlug'] as String?,
+        questionCategory: json['questionCategory'] as String?,
+        qaPostId: json['qaPostId'] as String?,
       );
 }
 
-class MyAnswerModel {
-  final String id;
-  final String area;
-  final String date;
-  final int helpful;
-  final String question;
-  final String preview;
+class QuestionWithAnswer {
+  final QaPost question;
+  final Answer? myAnswer;
 
-  MyAnswerModel({
-    required this.id,
-    required this.area,
-    required this.date,
-    required this.helpful,
-    required this.question,
-    required this.preview,
+  QuestionWithAnswer({required this.question, this.myAnswer});
+
+  factory QuestionWithAnswer.fromJson(Map<String, dynamic> json) =>
+      QuestionWithAnswer(
+        question:
+            QaPost.fromJson(json['question'] as Map<String, dynamic>),
+        myAnswer: json['myAnswer'] != null
+            ? Answer.fromJson(json['myAnswer'] as Map<String, dynamic>)
+            : null,
+      );
+}
+
+class QaDetail {
+  final QaPost question;
+  final List<Answer> answers;
+
+  QaDetail({required this.question, this.answers = const []});
+
+  factory QaDetail.fromJson(Map<String, dynamic> json) => QaDetail(
+        question:
+            QaPost.fromJson(json['question'] as Map<String, dynamic>),
+        answers: (json['answers'] as List<dynamic>?)
+                ?.map((e) => Answer.fromJson(e as Map<String, dynamic>))
+                .toList() ??
+            [],
+      );
+}
+
+class QuestionListItem {
+  final String id;
+  final String slug;
+  final String title;
+  final String excerpt;
+  final String category;
+  final int answers;
+  final int views;
+  final String status;
+  final bool answeredByMe;
+
+  QuestionListItem({
+    this.id = '',
+    this.slug = '',
+    this.title = '',
+    this.excerpt = '',
+    this.category = '',
+    this.answers = 0,
+    this.views = 0,
+    this.status = 'published',
+    this.answeredByMe = false,
   });
 
-  factory MyAnswerModel.fromJson(Map<String, dynamic> json) => MyAnswerModel(
-        id: json['id'] as String,
-        area: json['area'] as String,
-        date: json['date'] as String,
-        helpful: json['helpful'] as int,
-        question: json['question'] as String,
-        preview: json['preview'] as String,
+  factory QuestionListItem.fromJson(Map<String, dynamic> json) =>
+      QuestionListItem(
+        id: json['id'] as String? ?? '',
+        slug: json['slug'] as String? ?? '',
+        title: json['title'] as String? ?? '',
+        excerpt: json['excerpt'] as String? ?? '',
+        category: json['category'] as String? ?? '',
+        answers: json['answers'] as int? ?? 0,
+        views: json['views'] as int? ?? 0,
+        status: json['status'] as String? ?? 'published',
+        answeredByMe: json['answeredByMe'] as bool? ?? false,
       );
 }

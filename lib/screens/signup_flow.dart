@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import '../controllers/auth_controller.dart';
 
 class SignupFlow extends StatefulWidget {
   const SignupFlow({super.key});
@@ -11,27 +13,27 @@ class SignupFlow extends StatefulWidget {
 
 class _SignupFlowState extends State<SignupFlow> {
   final _pageController = PageController();
-  int _step = 0; // 0..3 = steps 1-4, 4 = success
+  int _step = 0;
   static const _totalSteps = 4;
 
   // Step 1
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _barNumberController = TextEditingController();
-  String? _barState;
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   // Step 2
-  int _yearsExperience = 5;
-  final Set<String> _practiceAreas = {'Corporate', 'Property'};
-  static const _allPracticeAreas = [
-    'Corporate', 'Criminal', 'Divorce', 'Family', 'GST & Tax',
-    'Immigration', 'Property', 'Startup', 'Cyber Crime',
-  ];
+  final _practiceController = TextEditingController();
+  final _barIdController = TextEditingController();
+  String? _citySlug;
 
   // Step 3
-  final List<String> _cities = ['New York, NY', 'Brooklyn, NY'];
-  final _cityController = TextEditingController();
-  final _feeController = TextEditingController(text: '250');
+  final Set<String> _specialization = {};
+  static const _allSpecializations = [
+    'Divorce', 'Family Law', 'Property', 'Corporate',
+    'Criminal', 'GST & Tax', 'Immigration', 'Cyber Crime',
+    'Intellectual Property', 'Real Estate', 'Banking', 'Insurance',
+  ];
 
   // Step 4
   final _bioController = TextEditingController();
@@ -42,9 +44,10 @@ class _SignupFlowState extends State<SignupFlow> {
     _pageController.dispose();
     _nameController.dispose();
     _emailController.dispose();
-    _barNumberController.dispose();
-    _cityController.dispose();
-    _feeController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
+    _practiceController.dispose();
+    _barIdController.dispose();
     _bioController.dispose();
     super.dispose();
   }
@@ -61,7 +64,23 @@ class _SignupFlowState extends State<SignupFlow> {
     if (_step < _totalSteps - 1) {
       _goToStep(_step + 1);
     } else {
-      setState(() => _step = _totalSteps); // success screen
+      _register();
+    }
+  }
+
+  void _register() async {
+    final auth = Get.find<AuthController>();
+    await auth.lawyerSignup(
+      name: _nameController.text.trim(),
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      phone: _phoneController.text.trim().isEmpty ? null : _phoneController.text.trim(),
+      practice: _practiceController.text.trim(),
+      barId: _barIdController.text.trim().isEmpty ? null : _barIdController.text.trim(),
+      citySlug: _citySlug,
+    );
+    if (auth.isLoggedIn.value) {
+      setState(() => _step = _totalSteps);
     }
   }
 
@@ -75,6 +94,7 @@ class _SignupFlowState extends State<SignupFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Get.find<AuthController>();
     if (_step == _totalSteps) {
       return _SuccessScreen(
         onContinue: () =>
@@ -86,7 +106,6 @@ class _SignupFlowState extends State<SignupFlow> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
               child: Row(
@@ -104,7 +123,6 @@ class _SignupFlowState extends State<SignupFlow> {
                 ],
               ),
             ),
-            // Progress
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -138,18 +156,24 @@ class _SignupFlowState extends State<SignupFlow> {
                   _stepWrapper(_buildStep1()),
                   _stepWrapper(_buildStep2()),
                   _stepWrapper(_buildStep3()),
-                  _stepWrapper(_buildStep4()),
+                  _stepWrapper(_buildStep4(auth)),
                 ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
-              child: GoldButton(
-                label: _step == _totalSteps - 1 ? 'Create Account' : 'Next Step',
+              child: Obx(() => GoldButton(
+                label: auth.isLoading.value
+                    ? 'Creating account...'
+                    : _step == _totalSteps - 1
+                        ? 'Create Account'
+                        : 'Next Step',
                 icon: _step == _totalSteps - 1 ? Icons.check_circle : Icons.arrow_forward,
                 background: _step == _totalSteps - 1 ? AppColors.navyContainer : AppColors.goldDark,
-                onPressed: _step == _totalSteps - 1 && !_agreedToTerms ? null : _next,
-              ),
+                onPressed: auth.isLoading.value || (_step == _totalSteps - 1 && !_agreedToTerms)
+                    ? null
+                    : _next,
+              )),
             ),
           ],
         ),
@@ -159,14 +183,10 @@ class _SignupFlowState extends State<SignupFlow> {
 
   String _stepTitle(int step) {
     switch (step) {
-      case 0:
-        return 'Basic Info';
-      case 1:
-        return 'Expertise';
-      case 2:
-        return 'Logistics';
-      default:
-        return 'Profile';
+      case 0: return 'Basic Info';
+      case 1: return 'Practice';
+      case 2: return 'Specialization';
+      default: return 'Profile';
     }
   }
 
@@ -185,7 +205,7 @@ class _SignupFlowState extends State<SignupFlow> {
         const SizedBox(height: 8),
         TextField(
           controller: _nameController,
-          decoration: const InputDecoration(hintText: 'Enter your full legal name'),
+          decoration: const InputDecoration(hintText: 'Adv. Full Name'),
         ),
         const SizedBox(height: 16),
         const CapsLabel('Email Address'),
@@ -196,23 +216,20 @@ class _SignupFlowState extends State<SignupFlow> {
           decoration: const InputDecoration(hintText: 'name@example.com'),
         ),
         const SizedBox(height: 16),
-        const CapsLabel('Bar Council Number'),
+        const CapsLabel('Password'),
         const SizedBox(height: 8),
         TextField(
-          controller: _barNumberController,
-          decoration: const InputDecoration(hintText: 'e.g. BAR/1234/56'),
+          controller: _passwordController,
+          obscureText: true,
+          decoration: const InputDecoration(hintText: 'Min 6 characters'),
         ),
         const SizedBox(height: 16),
-        const CapsLabel('Bar Council State'),
+        const CapsLabel('Phone (Optional)'),
         const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: _barState,
-          decoration: const InputDecoration(),
-          hint: const Text('Select State'),
-          items: const ['New York', 'California', 'Texas', 'Florida', 'Illinois']
-              .map((s) => DropdownMenuItem(value: s, child: Text(s)))
-              .toList(),
-          onChanged: (v) => setState(() => _barState = v),
+        TextField(
+          controller: _phoneController,
+          keyboardType: TextInputType.phone,
+          decoration: const InputDecoration(hintText: '+91 9876543210'),
         ),
       ],
     );
@@ -222,44 +239,51 @@ class _SignupFlowState extends State<SignupFlow> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SoftCard(
-          child: Column(
-            children: [
-              const CapsLabel('Years of Experience'),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _stepperButton(Icons.remove, () {
-                    if (_yearsExperience > 0) setState(() => _yearsExperience--);
-                  }),
-                  SizedBox(
-                    width: 64,
-                    child: Text(
-                      '$_yearsExperience',
-                      textAlign: TextAlign.center,
-                      style: AppText.displayLg,
-                    ),
-                  ),
-                  _stepperButton(Icons.add, () => setState(() => _yearsExperience++)),
-                ],
-              ),
-            ],
-          ),
+        const CapsLabel('Primary Practice Area'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _practiceController,
+          decoration: const InputDecoration(hintText: 'e.g. Divorce, Corporate, Criminal'),
         ),
-        const SizedBox(height: 24),
-        const CapsLabel('Practice Areas (select multiple)'),
+        const SizedBox(height: 16),
+        const CapsLabel('Bar ID (Optional)'),
+        const SizedBox(height: 8),
+        TextField(
+          controller: _barIdController,
+          decoration: const InputDecoration(hintText: 'MH/1234/2020'),
+        ),
+        const SizedBox(height: 16),
+        const CapsLabel('City'),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: _citySlug,
+          decoration: const InputDecoration(),
+          hint: const Text('Select City'),
+          items: const ['mumbai', 'delhi', 'bangalore', 'kolkata', 'chennai', 'pune', 'hyderabad', 'ahmedabad']
+              .map((s) => DropdownMenuItem(value: s, child: Text(s[0].toUpperCase() + s.substring(1))))
+              .toList(),
+          onChanged: (v) => setState(() => _citySlug = v),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStep3() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const CapsLabel('Specialization (select multiple)'),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: _allPracticeAreas.map((area) {
-            final selected = _practiceAreas.contains(area);
+          children: _allSpecializations.map((area) {
+            final selected = _specialization.contains(area);
             return SelectableChip(
               label: area,
               selected: selected,
               onTap: () => setState(() {
-                selected ? _practiceAreas.remove(area) : _practiceAreas.add(area);
+                selected ? _specialization.remove(area) : _specialization.add(area);
               }),
             );
           }).toList(),
@@ -268,74 +292,7 @@ class _SignupFlowState extends State<SignupFlow> {
     );
   }
 
-  Widget _stepperButton(IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      customBorder: const CircleBorder(),
-      child: Container(
-        width: 48,
-        height: 48,
-        margin: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: AppColors.outlineVariant),
-        ),
-        child: Icon(icon, color: AppColors.navy),
-      ),
-    );
-  }
-
-  Widget _buildStep3() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const CapsLabel('Cities Served'),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _cityController,
-          decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            hintText: 'Search cities...',
-          ),
-          onSubmitted: (value) {
-            if (value.trim().isEmpty) return;
-            setState(() {
-              _cities.add(value.trim());
-              _cityController.clear();
-            });
-          },
-        ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _cities.map((city) {
-            return Chip(
-              label: Text(city, style: AppText.bodySm.copyWith(color: Colors.white)),
-              backgroundColor: AppColors.navyContainer,
-              deleteIcon: const Icon(Icons.close, size: 16, color: Colors.white70),
-              onDeleted: () => setState(() => _cities.remove(city)),
-              shape: const StadiumBorder(),
-              side: BorderSide.none,
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 24),
-        const CapsLabel('Consultation Fee (Hourly)'),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _feeController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(prefixText: '\$ ', hintText: '250'),
-        ),
-        const SizedBox(height: 8),
-        Text('This will be displayed on your public profile.',
-            style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant)),
-      ],
-    );
-  }
-
-  Widget _buildStep4() {
+  Widget _buildStep4(AuthController auth) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -375,11 +332,22 @@ class _SignupFlowState extends State<SignupFlow> {
           controller: _bioController,
           maxLines: 5,
           decoration: const InputDecoration(
-            hintText:
-                'Briefly describe your background, approach, and what clients can expect when working with you...',
+            hintText: 'Briefly describe your background, approach, and what clients can expect...',
           ),
         ),
         const SizedBox(height: 16),
+        Obx(() {
+          if (auth.errorMessage.value != null) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                auth.errorMessage.value!,
+                style: AppText.bodySm.copyWith(color: AppColors.error),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+        }),
         InkWell(
           onTap: () => setState(() => _agreedToTerms = !_agreedToTerms),
           child: Row(
@@ -407,8 +375,7 @@ class _SignupFlowState extends State<SignupFlow> {
                           ),
                         ),
                         const TextSpan(
-                            text:
-                                ' and confirm that my Bar Council information is accurate.'),
+                            text: ' and confirm that my Bar Council information is accurate.'),
                       ],
                     ),
                   ),
@@ -449,24 +416,12 @@ class _SuccessScreen extends StatelessWidget {
                 Text('Profile Created!', style: AppText.displayLg, textAlign: TextAlign.center),
                 const SizedBox(height: 12),
                 Text(
-                  'Your application has been received. We have sent a verification link to your '
-                  'email address to confirm your identity.',
+                  'Your account has been created. Welcome to LawyerSpot!',
                   textAlign: TextAlign.center,
                   style: AppText.bodyMd.copyWith(color: AppColors.onSurfaceVariant),
                 ),
                 const SizedBox(height: 32),
                 GoldButton(label: 'Continue to Dashboard', onPressed: onContinue),
-                const SizedBox(height: 16),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    Text("Didn't receive it? ",
-                        style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant)),
-                    Text('Resend email',
-                        style: AppText.bodySm.copyWith(
-                            color: AppColors.navy, fontWeight: FontWeight.w700)),
-                  ],
-                ),
               ],
             ),
           ),

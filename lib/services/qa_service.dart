@@ -1,58 +1,51 @@
+import 'package:dio/dio.dart';
 import '../config/api_config.dart';
 import '../models/qa_model.dart';
 import 'base_service.dart';
 
-class QAService extends BaseService {
-  Future<List<QuestionModel>> getQuestions({String? area}) async {
-    final query = <String, String>{};
-    if (area != null && area != 'All Areas') {
-      query['area'] = area;
-    }
-    final response = await get(ApiConfig.questions, query: query);
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to load questions');
-    }
-    final list = response.body as List<dynamic>;
-    return list
-        .map((e) => QuestionModel.fromJson(e as Map<String, dynamic>))
-        .toList();
-  }
-
-  Future<QuestionModel> getQuestion(String id) async {
-    final response = await get(ApiConfig.question(id));
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to load question');
-    }
-    return QuestionModel.fromJson(response.body as Map<String, dynamic>);
-  }
-
-  Future<List<AnswerModel>> getAnswers(String questionId) async {
-    final response = await get(ApiConfig.questionAnswers(questionId));
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to load answers');
-    }
-    final list = response.body as List<dynamic>;
-    return list
-        .map((e) => AnswerModel.fromJson(e as Map<String, dynamic>))
-        .toList();
-  }
-
-  Future<void> submitAnswer(String questionId, String body) async {
+class QaService {
+  Future<List<QuestionListItem>> listQuestions() async {
     final response =
-        await post(ApiConfig.questionAnswers(questionId), {'body': body});
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to submit answer');
-    }
+        await BaseService.instance.dio.get(ApiConfig.lawyerQaQuestions);
+    final list =
+        (response.data as Map<String, dynamic>)['questions'] as List<dynamic>;
+    return list
+        .map((e) => QuestionListItem.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<List<MyAnswerModel>> getMyAnswers() async {
-    final response = await get(ApiConfig.myAnswers);
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Failed to load my answers');
-    }
-    final list = response.body as List<dynamic>;
-    return list
-        .map((e) => MyAnswerModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+  Future<List<Answer>> listMyAnswers() async {
+    final response =
+        await BaseService.instance.dio.get(ApiConfig.lawyerQaAnswers);
+    final list =
+        (response.data as Map<String, dynamic>)['answers'] as List<dynamic>;
+    return list.map((e) => Answer.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<QuestionWithAnswer> getQuestionDetail(String id) async {
+    final response =
+        await BaseService.instance.dio.get(ApiConfig.lawyerQaQuestion(id));
+    return QuestionWithAnswer.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<Answer> submitAnswer(String questionId, String body) async {
+    final response = await BaseService.instance.dio.post(
+      ApiConfig.lawyerQaAnswer(questionId),
+      data: {'body': body},
+    );
+    final data =
+        (response.data as Map<String, dynamic>)['answer'] as Map<String, dynamic>;
+    return Answer.fromJson(data);
+  }
+
+  Future<Map<String, dynamic>> deleteAnswer(String id) async {
+    final response =
+        await BaseService.instance.dio.delete(ApiConfig.deleteAnswer(id));
+    return response.data as Map<String, dynamic>;
+  }
+
+  Future<QaDetail> getPublicAnswers(String slug) async {
+    final response = await BaseService.instance.dio.get(ApiConfig.qaAnswers(slug));
+    return QaDetail.fromJson(response.data as Map<String, dynamic>);
   }
 }

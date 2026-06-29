@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../data/mock_data.dart';
-
 
 class SignupController extends GetxController {
   final pageController = PageController();
@@ -10,25 +8,16 @@ class SignupController extends GetxController {
   final isLoading = false.obs;
   final errorMessage = Rxn<String>();
 
-  // Step 1
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final barNumberController = TextEditingController();
-  final barState = Rxn<String>();
-
-  // Step 2
-  final yearsExperience = mockDefaultYearsExperience().obs;
-  final practiceAreas = mockDefaultPracticeAreas().obs;
-  static List<String> get allPracticeAreas => mockPracticeAreas();
-
-  // Step 3
-  final cities = mockDefaultCities().obs;
-  final cityController = TextEditingController();
-  final feeController = TextEditingController(text: mockDefaultFee());
-
-  // Step 4
+  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
+  final practiceController = TextEditingController();
+  final barIdController = TextEditingController();
+  final citySlug = Rxn<String>();
   final bioController = TextEditingController();
   final agreedToTerms = false.obs;
+  final specialization = <String>[].obs;
 
   bool get isLastStep => step.value == totalSteps - 1;
 
@@ -46,23 +35,6 @@ class SignupController extends GetxController {
   void next() async {
     if (step.value < totalSteps - 1) {
       goToStep(step.value + 1);
-    } else {
-      await _register();
-    }
-  }
-
-  Future<void> _register() async {
-    isLoading.value = true;
-    errorMessage.value = null;
-    try {
-      // TODO: Replace mock with real API call when backend is ready
-      // final request = RegisterRequest(...);
-      // await Get.find<AuthService>().register(request);
-      step.value = totalSteps;
-    } catch (e) {
-      errorMessage.value = e.toString().replaceFirst('Exception: ', '');
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -74,22 +46,13 @@ class SignupController extends GetxController {
     }
   }
 
-  void toggleArea(String area) {
-    if (practiceAreas.contains(area)) {
-      practiceAreas.remove(area);
+  void toggleSpecialization(String area) {
+    if (specialization.contains(area)) {
+      specialization.remove(area);
     } else {
-      practiceAreas.add(area);
+      specialization.add(area);
     }
   }
-
-  void addCity(String city) {
-    if (city.trim().isNotEmpty) {
-      cities.add(city.trim());
-      cityController.clear();
-    }
-  }
-
-  void removeCity(String city) => cities.remove(city);
 
   void toggleTerms() => agreedToTerms.toggle();
 
@@ -98,9 +61,10 @@ class SignupController extends GetxController {
     pageController.dispose();
     nameController.dispose();
     emailController.dispose();
-    barNumberController.dispose();
-    cityController.dispose();
-    feeController.dispose();
+    passwordController.dispose();
+    phoneController.dispose();
+    practiceController.dispose();
+    barIdController.dispose();
     bioController.dispose();
     super.onClose();
   }

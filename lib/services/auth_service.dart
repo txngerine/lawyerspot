@@ -1,27 +1,88 @@
+import 'package:dio/dio.dart';
 import '../config/api_config.dart';
 import '../models/auth_model.dart';
 import 'base_service.dart';
 
-class AuthService extends BaseService {
+class AuthService {
   Future<AuthResponse> login(LoginRequest request) async {
-    final response = await post(ApiConfig.login, request.toJson());
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Login failed');
+    try {
+      final response = await BaseService.instance.dio.post(
+        ApiConfig.login,
+        data: request.toJson(),
+      );
+      return AuthResponse.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: _extractMessage(e),
+      );
     }
-    final data = AuthResponse.fromJson(response.body as Map<String, dynamic>);
-    BaseService.setToken(data.token);
-    return data;
   }
 
-  Future<void> register(RegisterRequest request) async {
-    final response = await post(ApiConfig.register, request.toJson());
-    if (response.status.hasError) {
-      throw Exception(response.statusText ?? 'Registration failed');
+  Future<AuthResponse> lawyerSignup(LawyerSignupRequest request) async {
+    try {
+      final response = await BaseService.instance.dio.post(
+        ApiConfig.lawyerSignup,
+        data: request.toJson(),
+      );
+      return AuthResponse.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: _extractMessage(e),
+      );
     }
   }
 
-  Future<void> logout() async {
-    await post(ApiConfig.logout, {});
-    BaseService.setToken(null);
+  Future<AuthResponse> clientSignup(ClientSignupRequest request) async {
+    try {
+      final response = await BaseService.instance.dio.post(
+        ApiConfig.clientSignup,
+        data: request.toJson(),
+      );
+      return AuthResponse.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: _extractMessage(e),
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>> logout() async {
+    try {
+      final response = await BaseService.instance.dio.post(ApiConfig.logout);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: _extractMessage(e),
+      );
+    }
+  }
+
+  Future<SessionUser> getMe() async {
+    try {
+      final response = await BaseService.instance.dio.get(ApiConfig.authMe);
+      return SessionUser.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        message: _extractMessage(e),
+      );
+    }
+  }
+
+  static String _extractMessage(DioException e) {
+    if (e.response?.data is Map<String, dynamic>) {
+      final detail = (e.response!.data as Map<String, dynamic>)['detail'];
+      if (detail is String && detail.isNotEmpty) return detail;
+    }
+    return e.response?.statusMessage ?? 'Something went wrong';
   }
 }
