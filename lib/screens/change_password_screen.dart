@@ -34,10 +34,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     );
 
     if (_controller.errorMessage.value != null) {
-      Get.snackbar('Error', _controller.errorMessage.value!, snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', _controller.errorMessage.value!,
+          snackPosition: SnackPosition.BOTTOM);
       _controller.errorMessage.value = null;
     } else {
-      Get.snackbar('Success', 'Password changed successfully', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Success', 'Password changed successfully',
+          snackPosition: SnackPosition.BOTTOM);
       Get.back();
     }
   }
@@ -60,8 +62,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 TextFormField(
                   controller: _currentPwdController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Current Password'),
-                  validator: (v) => v == null || v.isEmpty ? 'Enter current password' : null,
+                  decoration:
+                      const InputDecoration(labelText: 'Current Password'),
+                  validator: (v) =>
+                      v == null || v.isEmpty ? 'Enter current password' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -70,7 +74,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   decoration: const InputDecoration(labelText: 'New Password'),
                   validator: (v) {
                     if (v == null || v.isEmpty) return 'Enter new password';
-                    if (v.length < 6) return 'Minimum 6 characters';
+                    if (v.length < 8) return 'Minimum 8 characters';
                     return null;
                   },
                 ),
@@ -78,9 +82,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 TextFormField(
                   controller: _confirmPwdController,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Confirm New Password'),
+                  decoration:
+                      const InputDecoration(labelText: 'Confirm New Password'),
                   validator: (v) {
-                    if (v != _newPwdController.text) return 'Passwords do not match';
+                    if (v != _newPwdController.text)
+                      return 'Passwords do not match';
                     return null;
                   },
                 ),
