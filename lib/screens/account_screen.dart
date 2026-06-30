@@ -41,7 +41,7 @@ class AccountScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 4),
-                            boxShadow: [BoxShadow(color: AppColors.navy.withOpacity(0.06), blurRadius: 8)],
+                            boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.06), blurRadius: 8)],
                           ),
                           child: CircleAvatar(
                             backgroundColor: AppColors.surfaceContainerHigh,
@@ -62,11 +62,11 @@ class AccountScreen extends StatelessWidget {
                               width: 28,
                               height: 28,
                               decoration: BoxDecoration(
-                                color: AppColors.navy,
+                                color: AppColors.primary,
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white, width: 2),
                               ),
-                              child: const Icon(Icons.verified, size: 15, color: AppColors.gold),
+                              child: const Icon(Icons.verified, size: 15, color: AppColors.accent),
                             ),
                           ),
                       ],
@@ -82,8 +82,8 @@ class AccountScreen extends StatelessWidget {
                     OutlinedButton(
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColors.navy,
-                        backgroundColor: AppColors.goldLight.withOpacity(0.7),
+                        foregroundColor: AppColors.primary,
+                        backgroundColor: AppColors.accentContainer.withOpacity(0.7),
                         side: BorderSide.none,
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
@@ -147,7 +147,7 @@ class AccountScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           ...items.map((item) => ListTile(
-                leading: Icon(item.icon, color: AppColors.navy.withOpacity(0.7)),
+                leading: Icon(item.icon, color: AppColors.primary.withOpacity(0.7)),
                 title: Text(item.label, style: AppText.bodyMd),
                 trailing: const Icon(Icons.chevron_right, color: AppColors.outlineVariant),
                 onTap: item.onTap,

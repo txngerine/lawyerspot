@@ -164,11 +164,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
                   child: Text(_sectionLabel(type),
-                      style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
+                      style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
                 ),
                 for (final r in grouped[type]!)
                   ListTile(
-                    leading: Icon(_iconForType(r.type), color: AppColors.navy),
+                    leading: Icon(_iconForType(r.type), color: AppColors.primary),
                     title: Text(r.title, style: AppText.titleLg),
                     subtitle: r.excerpt.isNotEmpty
                         ? Text(r.excerpt, style: AppText.bodySm, maxLines: 1, overflow: TextOverflow.ellipsis)

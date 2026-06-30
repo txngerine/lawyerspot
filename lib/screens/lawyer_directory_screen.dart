@@ -243,7 +243,7 @@ class _LawyerDirectoryScreenState extends State<LawyerDirectoryScreen> {
             backgroundColor: AppColors.surfaceContainerHigh,
             backgroundImage: lawyer.image.isNotEmpty ? NetworkImage(lawyer.image) : null,
             child: lawyer.image.isEmpty
-                ? Text(_initials(lawyer.name), style: AppText.headlineMd.copyWith(color: AppColors.navy.withOpacity(0.6)))
+                ? Text(_initials(lawyer.name), style: AppText.headlineMd.copyWith(color: AppColors.primary.withOpacity(0.6)))
                 : null,
           ),
           const SizedBox(width: 14),
@@ -257,7 +257,7 @@ class _LawyerDirectoryScreenState extends State<LawyerDirectoryScreen> {
                       child: Text(lawyer.name, style: AppText.titleLg, maxLines: 1, overflow: TextOverflow.ellipsis),
                     ),
                     if (lawyer.verified)
-                      const Icon(Icons.verified, size: 18, color: AppColors.goldDark),
+                      const Icon(Icons.verified, size: 18, color: AppColors.secondary),
                     if (lawyer.online) ...[
                       const SizedBox(width: 4),
                       Container(
@@ -292,7 +292,7 @@ class _LawyerDirectoryScreenState extends State<LawyerDirectoryScreen> {
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(lawyer.practice, style: AppText.bodySm.copyWith(color: AppColors.goldDark, fontWeight: FontWeight.w600)),
+                Text(lawyer.practice, style: AppText.bodySm.copyWith(color: AppColors.secondary, fontWeight: FontWeight.w600)),
                 if (lawyer.specialization.isNotEmpty) ...[
                   const SizedBox(height: 6),
                   Wrap(
@@ -301,15 +301,15 @@ class _LawyerDirectoryScreenState extends State<LawyerDirectoryScreen> {
                     children: lawyer.specialization.take(3).map((s) => Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: AppColors.navy.withOpacity(0.06),
+                        color: AppColors.primary.withOpacity(0.06),
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: Text(s, style: AppText.labelCaps.copyWith(color: AppColors.navy, fontSize: 10)),
+                      child: Text(s, style: AppText.labelCaps.copyWith(color: AppColors.primary, fontSize: 10)),
                     )).toList(),
                   ),
                 ],
                 const SizedBox(height: 6),
-                Text('₹${lawyer.fee}', style: AppText.titleLg.copyWith(color: AppColors.goldDark)),
+                Text('₹${lawyer.fee}', style: AppText.titleLg.copyWith(color: AppColors.secondary)),
               ],
             ),
           ),
@@ -325,7 +325,7 @@ class _LawyerDirectoryScreenState extends State<LawyerDirectoryScreen> {
         return Icon(
           i < rating.round() ? Icons.star : Icons.star_border,
           size: 14,
-          color: AppColors.gold,
+          color: AppColors.accent,
         );
       }),
     );

@@ -77,7 +77,7 @@ class _LawyerCard extends StatelessWidget {
                           lawyer.name.isNotEmpty
                               ? lawyer.name[0].toUpperCase()
                               : '?',
-                          style: AppText.titleLg.copyWith(color: AppColors.navy.withOpacity(0.6)),
+                          style: AppText.titleLg.copyWith(color: AppColors.primary.withOpacity(0.6)),
                         )
                       : null,
                 ),
@@ -93,16 +93,16 @@ class _LawyerCard extends StatelessWidget {
                       Row(
                         children: [
                           if (lawyer.rating > 0) ...[
-                            Icon(Icons.star, size: 16, color: AppColors.gold),
+                            Icon(Icons.star, size: 16, color: AppColors.accent),
                             const SizedBox(width: 4),
                             Text(lawyer.rating.toString(),
-                                style: AppText.bodySm.copyWith(color: AppColors.goldDark)),
+                                style: AppText.bodySm.copyWith(color: AppColors.secondary)),
                             const SizedBox(width: 12),
                           ],
                           Text(
                             '₹${lawyer.fee}',
                             style: AppText.bodySm.copyWith(
-                              color: AppColors.navy,
+                              color: AppColors.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),

@@ -22,6 +22,9 @@ class AuthController extends GetxController {
       final request = LoginRequest(email: email, password: password, role: role);
       await Get.find<AuthService>().login(request);
       await checkSession();
+      if (!isLoggedIn.value && errorMessage.value == null) {
+        errorMessage.value = 'Failed to verify session. Please try again.';
+      }
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {
@@ -52,6 +55,9 @@ class AuthController extends GetxController {
       );
       await Get.find<AuthService>().lawyerSignup(request);
       await checkSession();
+      if (!isLoggedIn.value && errorMessage.value == null) {
+        errorMessage.value = 'Account created but session verification failed. Please sign in.';
+      }
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {
@@ -74,6 +80,9 @@ class AuthController extends GetxController {
       );
       await Get.find<AuthService>().clientSignup(request);
       await checkSession();
+      if (!isLoggedIn.value && errorMessage.value == null) {
+        errorMessage.value = 'Account created but session verification failed. Please sign in.';
+      }
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {

@@ -93,11 +93,11 @@ class QABrowseScreen extends StatelessWidget {
                                   children: [
                                     Icon(Icons.forum_outlined,
                                         size: 14,
-                                        color: q.answers > 0 ? AppColors.gold : AppColors.outline),
+                                        color: q.answers > 0 ? AppColors.accent : AppColors.outline),
                                     const SizedBox(width: 4),
                                     Text('${q.answers} Answer${q.answers == 1 ? '' : 's'}',
                                         style: AppText.labelCaps.copyWith(
-                                            color: q.answers > 0 ? AppColors.goldDark : AppColors.outline)),
+                                            color: q.answers > 0 ? AppColors.secondary : AppColors.outline)),
                                   ],
                                 ),
                               ],

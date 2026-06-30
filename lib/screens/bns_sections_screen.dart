@@ -88,7 +88,7 @@ class _BnsSectionsScreenState extends State<BnsSectionsScreen> {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(section.code,
-                                style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
+                                style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
                           ),
                           const SizedBox(height: 10),
                           Text(section.title,

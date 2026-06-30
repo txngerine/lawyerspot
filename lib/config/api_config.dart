@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = 'https://lawyerspot.in/api/v1';
+  static const String baseUrl = 'https://lawyerspot.in/api';
 
   // Public
   static const String health = '/health';
@@ -36,6 +36,5 @@ class ApiConfig {
   static const String conversations = '/lawyer/conversations';
   static String conversationMessages(String id) =>
       '/lawyer/conversations/$id/messages';
-  static String conversationRead(String id) =>
-      '/lawyer/conversations/$id/read';
+  static String conversationRead(String id) => '/lawyer/conversations/$id/read';
 }

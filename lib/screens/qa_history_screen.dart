@@ -29,7 +29,7 @@ class QAHistoryScreen extends StatelessWidget {
                     child: SoftCard(
                       child: Column(
                         children: [
-                          const Icon(Icons.forum_outlined, size: 32, color: AppColors.navy),
+                          const Icon(Icons.forum_outlined, size: 32, color: AppColors.primary),
                           const SizedBox(height: 8),
                           Text('${qa.myAnswers.length}', style: AppText.displayLgMobile),
                           const SizedBox(height: 4),
@@ -43,16 +43,16 @@ class QAHistoryScreen extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: AppColors.navy,
+                        color: AppColors.primary,
                         borderRadius: BorderRadius.circular(18),
                       ),
                       child: Column(
                         children: [
-                          const Icon(Icons.lightbulb, size: 32, color: AppColors.gold),
+                          const Icon(Icons.lightbulb, size: 32, color: AppColors.accent),
                           const SizedBox(height: 8),
                           Text('${qa.myAnswers.length}', style: AppText.displayLgMobile.copyWith(color: Colors.white)),
                           const SizedBox(height: 4),
-                          Text('ANSWERS', style: AppText.labelCaps.copyWith(color: AppColors.gold)),
+                          Text('ANSWERS', style: AppText.labelCaps.copyWith(color: AppColors.accent)),
                         ],
                       ),
                     ),

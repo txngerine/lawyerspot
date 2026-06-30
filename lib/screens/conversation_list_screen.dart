@@ -53,7 +53,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: AppColors.navy.withOpacity(0.04),
+                          color: AppColors.primary.withOpacity(0.04),
                           shape: BoxShape.circle,
                         ),
                         child: Center(
@@ -61,7 +61,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                             conv.userName.isNotEmpty
                                 ? conv.userName[0].toUpperCase()
                                 : '?',
-                            style: AppText.titleLg.copyWith(color: AppColors.navy),
+                            style: AppText.titleLg.copyWith(color: AppColors.primary),
                           ),
                         ),
                       ),
@@ -103,7 +103,7 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: AppColors.goldDark,
+                                      color: AppColors.secondary,
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                     child: Text(

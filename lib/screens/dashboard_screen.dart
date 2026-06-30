@@ -196,9 +196,9 @@ class _WorkspaceLink extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       child: Column(
         children: [
-          Icon(icon, color: AppColors.navy),
+          Icon(icon, color: AppColors.primary),
           const SizedBox(height: 8),
-          Text(label, textAlign: TextAlign.center, style: AppText.labelCaps.copyWith(color: AppColors.navy)),
+          Text(label, textAlign: TextAlign.center, style: AppText.labelCaps.copyWith(color: AppColors.primary)),
         ],
       ),
     );

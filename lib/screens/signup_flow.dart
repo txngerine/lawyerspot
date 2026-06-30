@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../controllers/auth_controller.dart';
@@ -37,6 +39,7 @@ class _SignupFlowState extends State<SignupFlow> {
 
   // Step 4
   final _bioController = TextEditingController();
+  File? _photoFile;
   bool _agreedToTerms = false;
 
   @override
@@ -79,8 +82,58 @@ class _SignupFlowState extends State<SignupFlow> {
       barId: _barIdController.text.trim().isEmpty ? null : _barIdController.text.trim(),
       citySlug: _citySlug,
     );
+    if (!mounted) return;
     if (auth.isLoggedIn.value) {
       setState(() => _step = _totalSteps);
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: AppColors.outlineVariant,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              Text('Upload Photo', style: AppText.titleLg),
+              const SizedBox(height: 20),
+              ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: const Text('Camera'),
+                onTap: () => Navigator.of(context).pop(ImageSource.camera),
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_outlined),
+                title: const Text('Gallery'),
+                onTap: () => Navigator.of(context).pop(ImageSource.gallery),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    if (source == null) return;
+    final picked = await ImagePicker().pickImage(
+      source: source,
+      maxWidth: 512,
+      maxHeight: 512,
+    );
+    if (picked != null) {
+      setState(() => _photoFile = File(picked.path));
     }
   }
 
@@ -142,7 +195,7 @@ class _SignupFlowState extends State<SignupFlow> {
                       value: (_step + 1) / _totalSteps,
                       minHeight: 4,
                       backgroundColor: AppColors.surfaceContainer,
-                      color: AppColors.navyContainer,
+                      color: AppColors.primaryContainer,
                     ),
                   ),
                 ],
@@ -169,7 +222,7 @@ class _SignupFlowState extends State<SignupFlow> {
                         ? 'Create Account'
                         : 'Next Step',
                 icon: _step == _totalSteps - 1 ? Icons.check_circle : Icons.arrow_forward,
-                background: _step == _totalSteps - 1 ? AppColors.navyContainer : AppColors.goldDark,
+                background: _step == _totalSteps - 1 ? AppColors.primaryContainer : AppColors.secondary,
                 onPressed: auth.isLoading.value || (_step == _totalSteps - 1 && !_agreedToTerms)
                     ? null
                     : _next,
@@ -299,27 +352,57 @@ class _SignupFlowState extends State<SignupFlow> {
         Center(
           child: Column(
             children: [
-              Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.surfaceContainerHigh,
-                  border: Border.all(
-                      color: AppColors.outlineVariant, width: 2, style: BorderStyle.solid),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              GestureDetector(
+                onTap: _pickImage,
+                child: Stack(
                   children: [
-                    Icon(Icons.add_a_photo_outlined, color: AppColors.onSurfaceVariant, size: 28),
-                    const SizedBox(height: 2),
-                    Text('UPLOAD',
-                        style: AppText.labelCaps.copyWith(fontSize: 9)),
+                    Container(
+                      width: 96,
+                      height: 96,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.surfaceContainerHigh,
+                        image: _photoFile != null
+                            ? DecorationImage(
+                                image: FileImage(_photoFile!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                        border: Border.all(
+                            color: AppColors.outlineVariant, width: 2),
+                      ),
+                      child: _photoFile == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add_a_photo_outlined,
+                                    color: AppColors.onSurfaceVariant, size: 28),
+                                const SizedBox(height: 2),
+                                Text('UPLOAD',
+                                    style: AppText.labelCaps.copyWith(fontSize: 9)),
+                              ],
+                            )
+                          : null,
+                    ),
+                    if (_photoFile != null)
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.edit,
+                              size: 14, color: Colors.white),
+                        ),
+                      ),
                   ],
                 ),
               ),
               const SizedBox(height: 10),
-              Text('Professional headshot recommended',
+              Text(_photoFile != null ? 'Tap to change' : 'Professional headshot recommended',
                   style: AppText.bodySm.copyWith(color: AppColors.onSurfaceVariant),
                   textAlign: TextAlign.center),
             ],
@@ -369,7 +452,7 @@ class _SignupFlowState extends State<SignupFlow> {
                         TextSpan(
                           text: 'Terms of Service',
                           style: TextStyle(
-                            color: AppColors.goldDark,
+                            color: AppColors.secondary,
                             fontWeight: FontWeight.w700,
                             decoration: TextDecoration.underline,
                           ),
@@ -407,10 +490,10 @@ class _SuccessScreen extends StatelessWidget {
                   width: 96,
                   height: 96,
                   decoration: const BoxDecoration(
-                    color: AppColors.navyContainer,
+                    color: AppColors.primaryContainer,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.check_circle, color: AppColors.gold, size: 48),
+                  child: const Icon(Icons.check_circle, color: AppColors.accent, size: 48),
                 ),
                 const SizedBox(height: 24),
                 Text('Profile Created!', style: AppText.displayLg, textAlign: TextAlign.center),

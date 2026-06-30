@@ -138,7 +138,7 @@ class _ArticleCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: AppColors.goldDark,
+                        color: AppColors.secondary,
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Row(

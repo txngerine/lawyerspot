@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(hero.title, style: GoogleFonts.playfairDisplay(fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.navy)),
+          Text(hero.title, style: GoogleFonts.playfairDisplay(fontSize: 32, fontWeight: FontWeight.w700, color: AppColors.primary)),
           const SizedBox(height: 8),
           Text(hero.subtitle, style: AppText.bodyMd.copyWith(color: AppColors.onSurfaceVariant)),
           if (hero.badges.isNotEmpty) ...[
@@ -96,8 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
               spacing: 8,
               runSpacing: 8,
               children: hero.badges.map((badge) => Chip(
-                label: Text(badge, style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
-                backgroundColor: AppColors.goldLight.withOpacity(0.15),
+                label: Text(badge, style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
+                backgroundColor: AppColors.accentContainer.withOpacity(0.15),
                 side: BorderSide.none,
                 padding: EdgeInsets.zero,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 140,
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
-              color: AppColors.cardLowest,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.outlineVariant.withOpacity(0.25)),
             ),
@@ -210,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor: AppColors.surfaceContainerHigh,
                         backgroundImage: lawyer.image.isNotEmpty ? NetworkImage(lawyer.image) : null,
                         child: lawyer.image.isEmpty
-                            ? Text(_initials(lawyer.name), style: AppText.titleLg.copyWith(color: AppColors.navy.withOpacity(0.6)))
+                            ? Text(_initials(lawyer.name), style: AppText.titleLg.copyWith(color: AppColors.primary.withOpacity(0.6)))
                             : null,
                       ),
                       const SizedBox(width: 12),
@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Spacer(),
                   _ratingRow(lawyer.rating),
                   const SizedBox(height: 4),
-                  Text('₹${lawyer.fee}', style: AppText.titleLg.copyWith(color: AppColors.goldDark)),
+                  Text('₹${lawyer.fee}', style: AppText.titleLg.copyWith(color: AppColors.secondary)),
                 ],
               ),
             ),
@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(article.category, style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
+                        Text(article.category, style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
                         const SizedBox(height: 4),
                         Text(article.title, style: AppText.titleLg.copyWith(fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis),
                         const SizedBox(height: 4),
@@ -308,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(qa.category, style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
+                      Text(qa.category, style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
                       const SizedBox(height: 4),
                       Text(qa.title, style: AppText.titleLg.copyWith(fontSize: 14), maxLines: 2, overflow: TextOverflow.ellipsis),
                     ],
@@ -317,9 +317,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(width: 12),
                 Column(
                   children: [
-                    Icon(Icons.forum_outlined, size: 18, color: qa.answers > 0 ? AppColors.gold : AppColors.outline),
+                    Icon(Icons.forum_outlined, size: 18, color: qa.answers > 0 ? AppColors.accent : AppColors.outline),
                     const SizedBox(height: 2),
-                    Text('${qa.answers}', style: AppText.bodySm.copyWith(color: qa.answers > 0 ? AppColors.goldDark : AppColors.outline)),
+                    Text('${qa.answers}', style: AppText.bodySm.copyWith(color: qa.answers > 0 ? AppColors.secondary : AppColors.outline)),
                   ],
                 ),
               ],
@@ -336,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return Icon(
           i < rating.round() ? Icons.star : Icons.star_border,
           size: 16,
-          color: AppColors.gold,
+          color: AppColors.accent,
         );
       }),
     );

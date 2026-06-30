@@ -39,7 +39,7 @@ class SectionDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(code,
-                    style: AppText.titleLg.copyWith(color: AppColors.goldDark)),
+                    style: AppText.titleLg.copyWith(color: AppColors.secondary)),
               ),
               const SizedBox(height: 12),
               Text(title, style: AppText.displayLgMobile),
@@ -48,11 +48,11 @@ class SectionDetailScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.navy.withValues(alpha: 0.06),
+                    color: AppColors.primary.withValues(alpha: 0.06),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(category!,
-                      style: AppText.labelCaps.copyWith(color: AppColors.navy)),
+                      style: AppText.labelCaps.copyWith(color: AppColors.primary)),
                 ),
               ],
               if (body.isNotEmpty) ...[

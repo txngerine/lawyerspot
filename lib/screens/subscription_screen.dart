@@ -25,7 +25,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       case 'active':
         return AppColors.success;
       case 'expiring_soon':
-        return AppColors.goldDark;
+        return AppColors.secondary;
       case 'expired':
         return AppColors.error;
       default:
@@ -112,7 +112,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             const SizedBox(height: 4),
                             Text(
                               '${sub.plan.currency} ${sub.plan.priceMonthly}/mo',
-                              style: AppText.titleLg.copyWith(color: AppColors.goldDark),
+                              style: AppText.titleLg.copyWith(color: AppColors.secondary),
                             ),
                           ],
                         ),
@@ -172,7 +172,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     (plan) => Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: SoftCard(
-                        borderColor: plan.highlight ? AppColors.goldDark : null,
+                        borderColor: plan.highlight ? AppColors.secondary : null,
                         onTap: () => _confirmRenew(plan.id, plan.name),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +185,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                 ),
                                 Text(
                                   '${plan.currency} ${plan.priceMonthly}/mo',
-                                  style: AppText.titleLg.copyWith(color: AppColors.goldDark),
+                                  style: AppText.titleLg.copyWith(color: AppColors.secondary),
                                 ),
                               ],
                             ),

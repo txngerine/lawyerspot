@@ -1,37 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Color palette derived from the LawyerSpot design tokens
-/// (navy / gold premium legal-marketplace aesthetic).
 class AppColors {
   AppColors._();
 
-  static const navy = Color(0xFF040D2A); // primary
-  static const navyContainer = Color(0xFF1A2340); // primary-container
-  static const navyFixedDim = Color(0xFFBDC5EA);
+  // Primary – Deep Navy
+  static const primary = Color(0xFF0B2340);
+  static const primaryContainer = Color(0xFF1A344F);
+  static const primaryFixedDim = Color(0xFFB0C4DE);
 
-  static const gold = Color(0xFFC9A24B); // brand accent gold
-  static const goldDark = Color(0xFF795902); // secondary
-  static const goldLight = Color(0xFFFDD275); // secondary-container
+  // Secondary – Brand Blue
+  static const secondary = Color(0xFF1565D8);
+  static const secondaryContainer = Color(0xFFD6E4FF);
 
-  static const ivory = Color(0xFFFAF8F4); // app background
-  static const surface = Color(0xFFFBF9F8);
-  static const cardLowest = Color(0xFFFFFFFF);
-  static const surfaceContainer = Color(0xFFEFEDED);
-  static const surfaceContainerHigh = Color(0xFFEAE8E7);
+  // Accent – Gold Amber
+  static const accent = Color(0xFFF6C24F);
+  static const accentContainer = Color(0xFFFFF3D6);
 
-  static const outline = Color(0xFF76767E);
-  static const outlineVariant = Color(0xFFC6C6CE);
+  // Support – Teal Cyan
+  static const support = Color(0xFF17A2B8);
+  static const supportContainer = Color(0xFFD6F5FA);
 
-  static const onSurface = Color(0xFF1B1C1C);
-  static const onSurfaceVariant = Color(0xFF45464D);
+  // Surfaces
+  static const surface = Color(0xFFFFFFFF);
+  static const surfaceAlt = Color(0xFFF6F8FA);
+  static const surfaceContainer = Color(0xFFEEF0F2);
+  static const surfaceContainerHigh = Color(0xFFE6E8EA);
 
+  // Text
+  static const onSurface = Color(0xFF1F2933);
+  static const onSurfaceVariant = Color(0xFF4A5568);
+
+  // Outline / Border
+  static const outline = Color(0xFF6B7280);
+  static const outlineVariant = Color(0xFFD1D5DB);
+
+  // Semantic
   static const error = Color(0xFFBA1A1A);
   static const errorContainer = Color(0xFFFFDAD6);
-
   static const success = Color(0xFF2E7D32);
 
-  static const cardShadow = Color(0x0A040D2A); // ~4% navy
+  // Shadows
+  static const cardShadow = Color(0x0A0B2340);
 }
 
 class AppText {
@@ -41,25 +51,25 @@ class AppText {
     fontSize: 32,
     fontWeight: FontWeight.w700,
     letterSpacing: -0.3,
-    color: AppColors.navy,
+    color: AppColors.primary,
   );
 
   static TextStyle displayLgMobile = GoogleFonts.playfairDisplay(
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppColors.navy,
+    color: AppColors.primary,
   );
 
   static TextStyle headlineMd = GoogleFonts.playfairDisplay(
     fontSize: 22,
     fontWeight: FontWeight.w600,
-    color: AppColors.navy,
+    color: AppColors.primary,
   );
 
   static TextStyle titleLg = GoogleFonts.manrope(
     fontSize: 17,
     fontWeight: FontWeight.w600,
-    color: AppColors.navy,
+    color: AppColors.primary,
   );
 
   static TextStyle bodyMd = GoogleFonts.manrope(
@@ -89,12 +99,12 @@ class AppTheme {
     final base = ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: AppColors.ivory,
+      scaffoldBackgroundColor: AppColors.surfaceAlt,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.navy,
+        seedColor: AppColors.primary,
         brightness: Brightness.light,
-        primary: AppColors.navy,
-        secondary: AppColors.goldDark,
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
         surface: AppColors.surface,
         error: AppColors.error,
       ),
@@ -104,19 +114,19 @@ class AppTheme {
     return base.copyWith(
       textTheme: base.textTheme.apply(
         bodyColor: AppColors.onSurface,
-        displayColor: AppColors.navy,
+        displayColor: AppColors.primary,
         fontFamily: GoogleFonts.manrope().fontFamily,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.navy,
+        foregroundColor: AppColors.primary,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         centerTitle: false,
-        iconTheme: const IconThemeData(color: AppColors.navy),
+        iconTheme: const IconThemeData(color: AppColors.primary),
       ),
       cardTheme: CardThemeData(
-        color: AppColors.cardLowest,
+        color: AppColors.surface,
         elevation: 0,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
@@ -127,13 +137,13 @@ class AppTheme {
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.resolveWith(
           (states) => states.contains(WidgetState.selected)
-              ? AppColors.goldDark
+              ? AppColors.secondary
               : Colors.transparent,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.cardLowest,
+        fillColor: AppColors.surface,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
@@ -146,14 +156,14 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.goldDark, width: 1.4),
+          borderSide: const BorderSide(color: AppColors.secondary, width: 1.4),
         ),
         labelStyle: AppText.labelCaps,
         hintStyle: AppText.bodyMd.copyWith(color: AppColors.outline),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.goldDark,
+          backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
           textStyle: AppText.titleLg.copyWith(color: Colors.white),
           padding: const EdgeInsets.symmetric(vertical: 16),
@@ -165,8 +175,8 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.surface,
-        selectedItemColor: AppColors.goldDark,
-        unselectedItemColor: Color(0x66040D2A),
+        selectedItemColor: AppColors.secondary,
+        unselectedItemColor: Color(0x660B2340),
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 8,

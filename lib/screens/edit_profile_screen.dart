@@ -66,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 shape: BoxShape.circle,
                                 border: Border.all(color: Colors.white, width: 4),
                                 boxShadow: [
-                                  BoxShadow(color: AppColors.navy.withOpacity(0.08), blurRadius: 10),
+                                  BoxShadow(color: AppColors.primary.withOpacity(0.08), blurRadius: 10),
                                 ],
                               ),
                               child: CircleAvatar(
@@ -75,7 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ? NetworkImage(p!.image)
                                     : null,
                                 child: p?.image.isNotEmpty != true
-                                    ? const Icon(Icons.person, size: 40, color: AppColors.navy)
+                                    ? const Icon(Icons.person, size: 40, color: AppColors.primary)
                                     : null,
                               ),
                             ),
@@ -87,11 +87,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   width: 28,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    color: AppColors.navyContainer,
+                                    color: AppColors.primaryContainer,
                                     shape: BoxShape.circle,
                                     border: Border.all(color: Colors.white, width: 2),
                                   ),
-                                  child: const Icon(Icons.check_circle, size: 16, color: AppColors.gold),
+                                  child: const Icon(Icons.check_circle, size: 16, color: AppColors.accent),
                                 ),
                               ),
                           ],
@@ -133,7 +133,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         Switch(
                           value: _available,
-                          activeTrackColor: AppColors.navyContainer,
+                          activeTrackColor: AppColors.primaryContainer,
                           onChanged: (v) => setState(() => _available = v),
                         ),
                       ],
@@ -164,9 +164,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           runSpacing: 8,
                           children: (p?.specialization ?? []).map((area) {
                             return Chip(
-                              label: Text(area, style: AppText.bodySm.copyWith(color: AppColors.navy)),
-                              backgroundColor: AppColors.gold.withOpacity(0.1),
-                              side: BorderSide(color: AppColors.gold.withOpacity(0.4)),
+                              label: Text(area, style: AppText.bodySm.copyWith(color: AppColors.primary)),
+                              backgroundColor: AppColors.accent.withOpacity(0.1),
+                              side: BorderSide(color: AppColors.accent.withOpacity(0.4)),
                               shape: const StadiumBorder(),
                               deleteIcon: const Icon(Icons.close, size: 16),
                               onDeleted: () {},
@@ -222,8 +222,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   icon: const Icon(Icons.save_outlined, size: 18),
                   label: const Text('Save Changes'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.gold,
-                    foregroundColor: AppColors.navy,
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: AppColors.primary,
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                     elevation: 4,
                   ),

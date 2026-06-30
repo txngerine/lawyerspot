@@ -36,10 +36,10 @@ class GuidesListScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: AppColors.goldLight.withOpacity(0.3),
+                        color: AppColors.accentContainer.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: Text(guide.category, style: AppText.bodySm.copyWith(color: AppColors.goldDark)),
+                      child: Text(guide.category, style: AppText.bodySm.copyWith(color: AppColors.secondary)),
                     ),
                   ],
                 ),

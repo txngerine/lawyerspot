@@ -137,9 +137,9 @@ class StatisticsScreen extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                    color: AppColors.goldLight.withOpacity(0.3),
+                    color: AppColors.accentContainer.withOpacity(0.3),
                     shape: BoxShape.circle),
-                child: const Icon(Icons.star, color: AppColors.goldDark),
+                child: const Icon(Icons.star, color: AppColors.secondary),
               ),
             ],
           ),
@@ -149,7 +149,7 @@ class StatisticsScreen extends StatelessWidget {
               return Icon(
                 i < 4 ? Icons.star : Icons.star_half,
                 size: 16,
-                color: AppColors.goldDark,
+                color: AppColors.secondary,
               );
             }),
           ),
@@ -174,7 +174,7 @@ class StatisticsScreen extends StatelessWidget {
               style: AppText.labelCaps.copyWith(
                 fontSize: 10,
                 color:
-                    highlighted ? AppColors.navy : AppColors.onSurfaceVariant,
+                    highlighted ? AppColors.primary : AppColors.onSurfaceVariant,
                 fontWeight: highlighted ? FontWeight.w800 : FontWeight.w600,
               ),
             ),
@@ -183,7 +183,7 @@ class StatisticsScreen extends StatelessWidget {
               heightFactor: heightFraction,
               child: Container(
                 decoration: BoxDecoration(
-                  color: highlighted ? AppColors.goldLight : AppColors.navy,
+                  color: highlighted ? AppColors.accentContainer : AppColors.primary,
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(4)),
                 ),
@@ -193,7 +193,7 @@ class StatisticsScreen extends StatelessWidget {
             Text(label,
                 style: AppText.labelCaps.copyWith(
                     color: highlighted
-                        ? AppColors.navy
+                        ? AppColors.primary
                         : AppColors.onSurfaceVariant,
                     fontWeight:
                         highlighted ? FontWeight.w800 : FontWeight.w600)),
@@ -234,14 +234,14 @@ class _LineChartPainter extends CustomPainter {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          AppColors.gold.withOpacity(0.25),
-          AppColors.gold.withOpacity(0.0)
+          AppColors.accent.withOpacity(0.25),
+          AppColors.accent.withOpacity(0.0)
         ],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.drawPath(fillPath, fillPaint);
 
     final linePaint = Paint()
-      ..color = AppColors.gold
+      ..color = AppColors.accent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.5
       ..strokeJoin = StrokeJoin.round
@@ -250,7 +250,7 @@ class _LineChartPainter extends CustomPainter {
 
     final dotPaint = Paint()..color = Colors.white;
     final dotStroke = Paint()
-      ..color = AppColors.gold
+      ..color = AppColors.accent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
     for (int i = 0; i < _points.length; i++) {
@@ -258,7 +258,7 @@ class _LineChartPainter extends CustomPainter {
       final y = size.height * (1 - _points[i]);
       final isLast = i == _points.length - 1;
       canvas.drawCircle(Offset(x, y), isLast ? 5 : 3.5,
-          isLast ? (Paint()..color = AppColors.gold) : dotPaint);
+          isLast ? (Paint()..color = AppColors.accent) : dotPaint);
       if (!isLast) canvas.drawCircle(Offset(x, y), 3.5, dotStroke);
     }
   }

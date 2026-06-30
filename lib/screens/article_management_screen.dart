@@ -26,7 +26,7 @@ class _ArticleManagementScreenState extends State<ArticleManagementScreen> {
       appBar: const BrandAppBar(showBack: true, title: 'My Articles'),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Get.toNamed('/article/create'),
-        backgroundColor: AppColors.goldDark,
+        backgroundColor: AppColors.secondary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Obx(() {

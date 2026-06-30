@@ -73,14 +73,14 @@ class _ConsultationsListScreenState extends State<ConsultationsListScreen> {
           color: active ? AppColors.surface : Colors.transparent,
           borderRadius: BorderRadius.circular(100),
           boxShadow: active
-              ? [BoxShadow(color: AppColors.navy.withOpacity(0.06), blurRadius: 6)]
+              ? [BoxShadow(color: AppColors.primary.withOpacity(0.06), blurRadius: 6)]
               : null,
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: AppText.titleLg.copyWith(
-            color: active ? AppColors.navy : AppColors.onSurfaceVariant,
+            color: active ? AppColors.primary : AppColors.onSurfaceVariant,
           ),
         ),
       ),
@@ -211,8 +211,8 @@ class _ConsultationCard extends StatelessWidget {
                 ElevatedButton(
                   onPressed: onTap,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.goldLight,
-                    foregroundColor: AppColors.navy,
+                    backgroundColor: AppColors.accentContainer,
+                    foregroundColor: AppColors.primary,
                   ),
                   child: Text(actionLabel),
                 )

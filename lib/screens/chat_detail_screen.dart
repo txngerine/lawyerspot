@@ -90,7 +90,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                                   ),
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                                   decoration: BoxDecoration(
-                                    color: isLawyer ? AppColors.navy : AppColors.surfaceContainerHigh,
+                                    color: isLawyer ? AppColors.primary : AppColors.surfaceContainerHigh,
                                     borderRadius: BorderRadius.only(
                                       topLeft: const Radius.circular(16),
                                       topRight: const Radius.circular(16),
@@ -127,7 +127,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: AppColors.cardLowest,
+                color: AppColors.surface,
                 border: Border(top: BorderSide(color: AppColors.outlineVariant.withOpacity(0.3))),
               ),
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
@@ -147,9 +147,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   const SizedBox(width: 8),
                   IconButton(
                     onPressed: _sendMessage,
-                    icon: const Icon(Icons.send_rounded, color: AppColors.goldDark),
+                    icon: const Icon(Icons.send_rounded, color: AppColors.secondary),
                     style: IconButton.styleFrom(
-                      backgroundColor: AppColors.goldDark.withOpacity(0.1),
+                      backgroundColor: AppColors.secondary.withOpacity(0.1),
                     ),
                   ),
                 ],

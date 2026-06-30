@@ -51,11 +51,11 @@ class ArticleDetailScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AppColors.goldDark.withOpacity(0.1),
+                    color: AppColors.secondary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   child: Text(article.category,
-                      style: AppText.labelCaps.copyWith(color: AppColors.goldDark)),
+                      style: AppText.labelCaps.copyWith(color: AppColors.secondary)),
                 ),
                 if (article.trending) ...[
                   const SizedBox(width: 8),

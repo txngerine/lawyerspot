@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.navyContainer,
+      backgroundColor: AppColors.primaryContainer,
       body: GestureDetector(
         onTap: () => Navigator.of(context).pushReplacementNamed('/login'),
         child: Stack(
@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.goldLight.withOpacity(0.06),
+                    color: AppColors.accentContainer.withOpacity(0.06),
                   ),
                 ),
               ),
@@ -92,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
                           style: GoogleFonts.playfairDisplay(
                             fontWeight: FontWeight.w700,
                             fontSize: 48,
-                            color: AppColors.gold,
+                            color: AppColors.accent,
                             letterSpacing: -0.5,
                           ),
                         ),
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen>
                         Text(
                           'Your Digital Chambers',
                           style: AppText.titleLg.copyWith(
-                            color: AppColors.goldLight.withOpacity(0.8),
+                            color: AppColors.accentContainer.withOpacity(0.8),
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -120,16 +120,16 @@ class _SplashScreenState extends State<SplashScreen>
                           width: 20,
                           height: 20,
                           decoration: const BoxDecoration(
-                            color: AppColors.navy,
+                            color: AppColors.primary,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.check, size: 12, color: AppColors.gold),
+                          child: const Icon(Icons.check, size: 12, color: AppColors.accent),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'VERIFIED LEGAL PROFESSIONALS ONLY',
                           style: AppText.labelCaps.copyWith(
-                            color: AppColors.goldLight.withOpacity(0.7),
+                            color: AppColors.accentContainer.withOpacity(0.7),
                           ),
                         ),
                       ],

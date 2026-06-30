@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _emailController.text.trim(),
       _passwordController.text,
     );
+    if (!mounted) return;
     if (auth.isLoggedIn.value) {
       Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
     }
@@ -122,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () => Navigator.of(context).pushNamed('/signup'),
                           child: Text('Sign Up',
                               style: AppText.bodySm.copyWith(
-                                  color: AppColors.navy, fontWeight: FontWeight.w700)),
+                                  color: AppColors.primary, fontWeight: FontWeight.w700)),
                         ),
                       ],
                     ),

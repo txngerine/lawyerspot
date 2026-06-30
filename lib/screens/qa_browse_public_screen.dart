@@ -69,10 +69,10 @@ class _QaBrowsePublicScreenState extends State<QaBrowsePublicScreen> {
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                               decoration: BoxDecoration(
-                                color: AppColors.navy.withOpacity(0.06),
+                                color: AppColors.primary.withOpacity(0.06),
                                 borderRadius: BorderRadius.circular(100),
                               ),
-                              child: Text(topic, style: AppText.bodySm.copyWith(color: AppColors.navy)),
+                              child: Text(topic, style: AppText.bodySm.copyWith(color: AppColors.primary)),
                             );
                           },
                         ),
@@ -133,11 +133,11 @@ class _QaBrowsePublicScreenState extends State<QaBrowsePublicScreen> {
                                   children: [
                                     Icon(Icons.forum_outlined,
                                         size: 14,
-                                        color: post.answers > 0 ? AppColors.gold : AppColors.outline),
+                                        color: post.answers > 0 ? AppColors.accent : AppColors.outline),
                                     const SizedBox(width: 4),
                                     Text('${post.answers}',
                                         style: AppText.labelCaps.copyWith(
-                                            color: post.answers > 0 ? AppColors.goldDark : AppColors.outline)),
+                                            color: post.answers > 0 ? AppColors.secondary : AppColors.outline)),
                                     const SizedBox(width: 12),
                                     Icon(Icons.visibility_outlined, size: 14, color: AppColors.outline),
                                     const SizedBox(width: 4),

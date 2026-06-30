@@ -23,10 +23,10 @@ class ConsultationDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.schedule, size: 18, color: AppColors.navy.withOpacity(0.7)),
+                      Icon(Icons.schedule, size: 18, color: AppColors.primary.withOpacity(0.7)),
                       const SizedBox(width: 6),
                       Text('10:00 AM - 11:00 AM EST',
-                          style: AppText.titleLg.copyWith(color: AppColors.navy.withOpacity(0.7))),
+                          style: AppText.titleLg.copyWith(color: AppColors.primary.withOpacity(0.7))),
                     ],
                   ),
                 ],
@@ -39,8 +39,8 @@ class ConsultationDetailScreen extends StatelessWidget {
                 icon: const Icon(Icons.video_camera_front_outlined),
                 label: const Text('JOIN CALL'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.gold,
-                  foregroundColor: AppColors.navy,
+                  backgroundColor: AppColors.accent,
+                  foregroundColor: AppColors.primary,
                   padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                 ),
               ),
@@ -115,10 +115,10 @@ class ConsultationDetailScreen extends StatelessWidget {
                     maxLines: 5,
                     decoration: InputDecoration(
                       hintText: 'Add private notes for this consultation...',
-                      fillColor: AppColors.ivory,
+                      fillColor: AppColors.surfaceAlt,
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.gold),
+                        borderSide: const BorderSide(color: AppColors.accent),
                       ),
                     ),
                   ),
@@ -135,7 +135,7 @@ class ConsultationDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Attached Documents', style: AppText.titleLg),
-                      Text('VIEW ALL', style: AppText.labelCaps.copyWith(color: AppColors.navy)),
+                      Text('VIEW ALL', style: AppText.labelCaps.copyWith(color: AppColors.primary)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -153,7 +153,7 @@ class ConsultationDetailScreen extends StatelessWidget {
                             color: AppColors.surfaceContainer,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(Icons.description_outlined, color: AppColors.navy),
+                          child: const Icon(Icons.description_outlined, color: AppColors.primary),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -161,7 +161,7 @@ class ConsultationDetailScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Vance_Merger_Brief.pdf',
-                                  style: AppText.bodySm.copyWith(fontWeight: FontWeight.w700, color: AppColors.navy)),
+                                  style: AppText.bodySm.copyWith(fontWeight: FontWeight.w700, color: AppColors.primary)),
                               Text('Added Oct 24 • 2.4 MB',
                                   style: AppText.labelCaps.copyWith(fontSize: 10, color: AppColors.outline)),
                             ],
@@ -185,7 +185,7 @@ class ConsultationDetailScreen extends StatelessWidget {
       children: [
         CapsLabel(label, color: AppColors.outline),
         const SizedBox(height: 4),
-        Text(value, style: AppText.bodyMd.copyWith(color: AppColors.navy)),
+        Text(value, style: AppText.bodyMd.copyWith(color: AppColors.primary)),
       ],
     );
   }

@@ -25,14 +25,14 @@ class SoftCard extends StatelessWidget {
     final card = Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: color ?? AppColors.cardLowest,
+        color: color ?? AppColors.surface,
         borderRadius: BorderRadius.circular(borderRadius),
         border: Border.all(
           color: borderColor ?? AppColors.outlineVariant.withOpacity(0.18),
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.navy.withOpacity(0.05),
+            color: AppColors.primary.withOpacity(0.05),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -74,7 +74,7 @@ class GoldButton extends StatelessWidget {
     final button = ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: background ?? AppColors.goldDark,
+        backgroundColor: background ?? AppColors.secondary,
         foregroundColor: foreground ?? Colors.white,
       ),
       child: Row(
@@ -103,7 +103,7 @@ class CapsLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text.toUpperCase(),
-      style: AppText.labelCaps.copyWith(color: color ?? AppColors.navy),
+      style: AppText.labelCaps.copyWith(color: color ?? AppColors.primary),
     );
   }
 }
@@ -131,9 +131,9 @@ class SelectableChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: selected ? AppColors.goldDark.withOpacity(0.1) : AppColors.cardLowest,
+          color: selected ? AppColors.secondary.withOpacity(0.1) : AppColors.surface,
           border: Border.all(
-            color: selected ? AppColors.goldDark : AppColors.outlineVariant,
+            color: selected ? AppColors.secondary : AppColors.outlineVariant,
           ),
         ),
         child: Row(
@@ -142,13 +142,13 @@ class SelectableChip extends StatelessWidget {
             Text(
               label,
               style: AppText.bodySm.copyWith(
-                color: selected ? AppColors.goldDark : AppColors.onSurfaceVariant,
+                color: selected ? AppColors.secondary : AppColors.onSurfaceVariant,
                 fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
               ),
             ),
             if (selected) ...[
               const SizedBox(width: 4),
-              const Icon(Icons.check, size: 14, color: AppColors.goldDark),
+              const Icon(Icons.check, size: 14, color: AppColors.secondary),
             ],
           ],
         ),
@@ -186,7 +186,7 @@ class VerifiedAvatar extends StatelessWidget {
                 ? Text(
                     initials ?? '',
                     style: AppText.titleLg.copyWith(
-                      color: AppColors.navy.withOpacity(0.6),
+                      color: AppColors.primary.withOpacity(0.6),
                     ),
                   )
                 : null,
@@ -198,11 +198,11 @@ class VerifiedAvatar extends StatelessWidget {
               width: size * 0.32,
               height: size * 0.32,
               decoration: BoxDecoration(
-                color: AppColors.navy,
+                color: AppColors.primary,
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.surface, width: 2),
               ),
-              child: Icon(Icons.check, size: size * 0.18, color: AppColors.gold),
+              child: Icon(Icons.check, size: size * 0.18, color: AppColors.accent),
             ),
           ),
         ],
@@ -251,7 +251,7 @@ class BrandAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: Badge(
             smallSize: 8,
-            backgroundColor: AppColors.goldDark,
+            backgroundColor: AppColors.secondary,
             child: const Icon(Icons.notifications_outlined),
           ),
           onPressed: onNotificationsTap,
@@ -303,7 +303,7 @@ class StatTile extends StatelessWidget {
                   color: AppColors.surfaceContainer,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: AppColors.navy, size: 20),
+                child: Icon(icon, color: AppColors.primary, size: 20),
               ),
             ],
           ),

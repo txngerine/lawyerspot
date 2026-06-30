@@ -65,7 +65,7 @@ class _ActsListScreenState extends State<ActsListScreen> {
                         ),
                         child: Text(act.act,
                             style: AppText.labelCaps.copyWith(
-                                color: AppColors.goldDark)),
+                                color: AppColors.secondary)),
                       ),
                     ],
                     if (act.body.isNotEmpty) ...[

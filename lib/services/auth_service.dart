@@ -15,11 +15,7 @@ class AuthService {
       debugPrint('[Auth] login response: ${response.data}');
       return AuthResponse.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: _extractMessage(e),
-      );
+      throw Exception(_extractMessage(e));
     }
   }
 
@@ -33,11 +29,7 @@ class AuthService {
       debugPrint('[Auth] lawyerSignup response: ${response.data}');
       return AuthResponse.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: _extractMessage(e),
-      );
+      throw Exception(_extractMessage(e));
     }
   }
 
@@ -51,11 +43,7 @@ class AuthService {
       debugPrint('[Auth] clientSignup response: ${response.data}');
       return AuthResponse.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: _extractMessage(e),
-      );
+      throw Exception(_extractMessage(e));
     }
   }
 
@@ -66,11 +54,7 @@ class AuthService {
       debugPrint('[Auth] logout response: ${response.data}');
       return response.data as Map<String, dynamic>;
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: _extractMessage(e),
-      );
+      throw Exception(_extractMessage(e));
     }
   }
 
@@ -80,11 +64,7 @@ class AuthService {
       debugPrint('[Auth] getMe response: ${response.data}');
       return SessionUser.fromJson(response.data as Map<String, dynamic>);
     } on DioException catch (e) {
-      throw DioException(
-        requestOptions: e.requestOptions,
-        response: e.response,
-        message: _extractMessage(e),
-      );
+      throw Exception(_extractMessage(e));
     }
   }
 
@@ -93,6 +73,8 @@ class AuthService {
       final detail = (e.response!.data as Map<String, dynamic>)['detail'];
       if (detail is String && detail.isNotEmpty) return detail;
     }
-    return e.response?.statusMessage ?? 'Something went wrong';
+    if (e.response?.statusCode == 404) return 'Server endpoint not found. Please try again later.';
+    if (e.response?.statusCode == 500) return 'Server error. Please try again later.';
+    return e.response?.statusMessage ?? 'Connection failed. Check your internet.';
   }
 }

@@ -25,10 +25,10 @@ class NotificationsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.navy.withOpacity(0.05),
+                    color: AppColors.primary.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Text('2 New', style: AppText.labelCaps.copyWith(fontSize: 9, color: AppColors.navy)),
+                  child: Text('2 New', style: AppText.labelCaps.copyWith(fontSize: 9, color: AppColors.primary)),
                 ),
               ],
             ),
@@ -87,17 +87,17 @@ class NotificationsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (unread)
-            Container(width: 3, height: 56, color: AppColors.goldLight, margin: const EdgeInsets.only(right: 12))
+            Container(width: 3, height: 56, color: AppColors.accentContainer, margin: const EdgeInsets.only(right: 12))
           else
             const SizedBox(width: 0),
           Container(
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.navy.withOpacity(0.04),
+              color: AppColors.primary.withOpacity(0.04),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppColors.navy),
+            child: Icon(icon, color: AppColors.primary),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -110,7 +110,7 @@ class NotificationsScreen extends StatelessWidget {
                     Expanded(child: Text(title, style: AppText.titleLg)),
                     Text(trailing,
                         style: AppText.labelCaps.copyWith(
-                            color: unread ? AppColors.goldDark : AppColors.onSurfaceVariant)),
+                            color: unread ? AppColors.secondary : AppColors.onSurfaceVariant)),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -120,10 +120,10 @@ class NotificationsScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.goldLight,
+                      color: AppColors.accentContainer,
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Text(action, style: AppText.labelCaps.copyWith(color: AppColors.navy)),
+                    child: Text(action, style: AppText.labelCaps.copyWith(color: AppColors.primary)),
                   ),
                 ],
               ],
@@ -134,7 +134,7 @@ class NotificationsScreen extends StatelessWidget {
               width: 8,
               height: 8,
               margin: const EdgeInsets.only(left: 8, top: 4),
-              decoration: const BoxDecoration(color: AppColors.goldLight, shape: BoxShape.circle),
+              decoration: const BoxDecoration(color: AppColors.accentContainer, shape: BoxShape.circle),
             ),
         ],
       ),
