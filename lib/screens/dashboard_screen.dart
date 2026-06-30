@@ -10,6 +10,7 @@ import 'statistics_screen.dart';
 import 'article_management_screen.dart';
 import 'conversation_list_screen.dart';
 import 'subscription_screen.dart';
+import 'change_password_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -164,20 +165,6 @@ class DashboardScreen extends StatelessWidget {
             ],
           );
         }),
-      ),
-    );
-  }
-}
-
-class ChangePasswordScreen extends StatelessWidget {
-  const ChangePasswordScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Change Password')),
-      body: const Center(
-        child: Text('Change password screen content'),
       ),
     );
   }

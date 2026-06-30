@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../models/auth_model.dart';
 import '../models/lawyer_model.dart';
@@ -49,6 +50,10 @@ class ProfileController extends GetxController {
         newPassword: newPwd,
       );
       await Get.find<ProfileService>().changePassword(req);
+    } on DioException catch (e) {
+      errorMessage.value = e.response?.data?['message'] as String? ??
+          e.response?.statusMessage ??
+          'Password change failed';
     } catch (e) {
       errorMessage.value = e.toString().replaceFirst('Exception: ', '');
     } finally {
