@@ -51,7 +51,7 @@ class ProfileController extends GetxController {
       );
       await Get.find<ProfileService>().changePassword(req);
     } on DioException catch (e) {
-      errorMessage.value = e.response?.data?['message'] as String? ??
+      errorMessage.value = e.response?.data?['detail'] as String? ??
           e.response?.statusMessage ??
           'Password change failed';
     } catch (e) {
