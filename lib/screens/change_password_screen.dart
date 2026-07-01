@@ -40,7 +40,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     } else {
       Get.snackbar('Success', 'Password changed successfully',
           snackPosition: SnackPosition.BOTTOM);
-      Get.back();
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil('/home', (route) => false);
     }
   }
 

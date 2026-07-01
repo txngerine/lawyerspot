@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/article_controller.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'article_editor_screen.dart';
 
 class ArticleManagementScreen extends StatefulWidget {
   const ArticleManagementScreen({super.key});
@@ -25,7 +26,9 @@ class _ArticleManagementScreenState extends State<ArticleManagementScreen> {
     return Scaffold(
       appBar: const BrandAppBar(showBack: true, title: 'My Articles'),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.toNamed('/article/create'),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const ArticleEditorScreen()),
+        ),
         backgroundColor: AppColors.secondary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -81,7 +84,11 @@ class _ArticleManagementScreenState extends State<ArticleManagementScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: SoftCard(
-                    onTap: () => Get.toNamed('/article/edit/${article.slug}'),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ArticleEditorScreen(article: article),
+                      ),
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
