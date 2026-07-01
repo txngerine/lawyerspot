@@ -8,6 +8,7 @@ import 'subscription_screen.dart';
 import 'change_password_screen.dart';
 import 'conversation_list_screen.dart';
 import 'article_management_screen.dart';
+import 'edit_profile_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -80,7 +81,9 @@ class AccountScreen extends StatelessWidget {
                     ],
                     const SizedBox(height: 16),
                     OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                      ),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.primary,
                         backgroundColor: AppColors.accentContainer.withOpacity(0.7),

@@ -3,7 +3,7 @@ import '../theme/app_theme.dart';
 import 'dashboard_screen.dart';
 import 'conversation_list_screen.dart';
 import '../screens/qa_browse_screen.dart';
-import '../screens/edit_profile_screen.dart';
+import '../screens/profile_screen.dart';
 import 'account_screen.dart';
 
 class HomeShell extends StatefulWidget {
@@ -20,7 +20,7 @@ class _HomeShellState extends State<HomeShell> {
     DashboardScreen(),
     ConversationListScreen(),
     QABrowseScreen(),
-    EditProfileScreen(),
+    ProfileScreen(),
     AccountScreen(),
   ];
 

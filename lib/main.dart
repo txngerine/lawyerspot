@@ -9,6 +9,7 @@ import 'services/qa_service.dart';
 import 'services/conversation_service.dart';
 import 'services/section_service.dart';
 import 'services/subscription_service.dart';
+import 'services/statistics_service.dart';
 import 'controllers/cms_controller.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/profile_controller.dart';
@@ -18,6 +19,7 @@ import 'controllers/conversation_controller.dart';
 import 'controllers/search_controller.dart' as app;
 import 'controllers/section_controller.dart';
 import 'controllers/subscription_controller.dart';
+import 'controllers/statistics_controller.dart';
 import 'controllers/navigation_controller.dart';
 import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
@@ -38,6 +40,7 @@ void main() async {
   Get.put(ConversationService());
   Get.put(SectionService());
   Get.put(SubscriptionService());
+  Get.put(StatisticsService());
 
   // Controllers
   Get.put(CmsController());
@@ -49,6 +52,7 @@ void main() async {
   Get.put(app.SearchController());
   Get.put(SectionController());
   Get.put(SubscriptionController());
+  Get.put(StatisticsController());
   Get.put(NavigationController());
 
   runApp(const LawyerSpotApp());

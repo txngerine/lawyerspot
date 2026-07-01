@@ -37,4 +37,7 @@ class ApiConfig {
   static String conversationMessages(String id) =>
       '/lawyer/conversations/$id/messages';
   static String conversationRead(String id) => '/lawyer/conversations/$id/read';
+
+  // Statistics
+  static const String statisticsOverview = '/statistics/overview';
 }

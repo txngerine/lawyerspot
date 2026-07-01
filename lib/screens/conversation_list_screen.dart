@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/conversation_controller.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
+import 'chat_detail_screen.dart';
 
 class ConversationListScreen extends StatefulWidget {
   const ConversationListScreen({super.key});
@@ -45,7 +46,11 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                 child: SoftCard(
                   onTap: () {
                     _controller.selectConversation(conv);
-                    Get.toNamed('/chat/${conv.id}');
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ChatDetailScreen(conversation: conv),
+                      ),
+                    );
                   },
                   child: Row(
                     children: [
